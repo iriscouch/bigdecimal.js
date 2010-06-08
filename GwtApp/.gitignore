@@ -1,0 +1,3 @@
+*.class
+war/WEB-INF/classes
+war/io.couch.gwtapp.Export

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <inherits name='io.couch.gwtapp.GwtApp'/>
+  <inherits name='org.timepedia.exporter.Exporter'/>
+  <set-property name='export' value='yes'/>
+
+  <add-linker name='xs'/>
+</module>

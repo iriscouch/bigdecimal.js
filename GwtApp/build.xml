@@ -27,6 +27,9 @@
         source="1.5" target="1.5" nowarn="true"
         debug="true" debuglevel="lines,vars,source">
       <classpath refid="project.class.path"/>
+      <classpath>
+        <pathelement location="lib/gwtexporter-2.09.jar"/>
+      </classpath>
     </javac>
     <copy todir="war/WEB-INF/classes">
       <fileset dir="src" excludes="**/*.java"/>
@@ -37,13 +40,14 @@
     <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
       <classpath>
         <pathelement location="src"/>
+        <pathelement location="lib/gwtexporter-2.09.jar"/>
         <path refid="project.class.path"/>
       </classpath>
       <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
       <jvmarg value="-Xmx256M"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
       <arg line="${gwt.args}"/>
-      <arg value="io.couch.gwtapp.GwtApp"/>
+      <arg value="io.couch.gwtapp.Export"/>
     </java>
   </target>
 
