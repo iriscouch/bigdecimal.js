@@ -1,0 +1,149 @@
+package io.couch.gwtapp.client;
+
+import java.math.BigDecimal;
+
+import com.google.gwt.core.client.JavaScriptObject;
+import org.timepedia.exporter.client.Export;
+import org.timepedia.exporter.client.NoExport;
+import org.timepedia.exporter.client.Exportable;
+import org.timepedia.exporter.client.ExportPackage;
+
+@ExportPackage("j")
+
+@Export
+public class BigDec extends BigDecimal implements Exportable {
+  // I think this constructor is needed for Javascript compatibility.
+  public BigDec() {
+    super("0");
+  }
+
+  <% %w[ double int long String ].each do |type| %>
+    @NoExport
+    public BigDec(<%= type %> source) { super(source); }
+  <% end %>
+
+  @NoExport
+  public BigDec(BigDecimal source) {
+    super(source.toString());
+  }
+
+  // A shortcut to quickly convert a string to a BigDec
+  public static BigDec Create(InitParams params) {
+    if(params.has("String"))
+      return new BigDec(params.get("String"));
+    else if(params.has("double"))
+      return new BigDec(params.getNum("double"));
+    else if(params.has("int"))
+      return new BigDec(params.getNum("int"));
+    else if(params.has("long"))
+      return new BigDec(params.getNum("long"));
+
+    // TODO: Maybe MathContext stuff?
+    return null;
+  }
+
+  <%
+    def wrap(return_type, name, *param_types)
+      formal = []; actual = []
+      param_types.each_with_index do |param_type, a|
+        formal.push "#{param_type} var#{a}"
+        actual.push "var#{a}"
+      end
+
+      call = "super.#{name}(#{actual.join ', '})"
+      expr = call
+      expr = "new BigDec(#{call})" if return_type == :BigDec
+
+      "public #{return_type} #{name}(#{formal.join ', '}) { return #{expr}; }"
+    end
+  %>
+
+  <%= wrap :BigDec, :abs %>
+  <%= wrap :BigDec, :add, :BigDec %>
+  <%= wrap :byte, :byteValueExact %>
+  <%= wrap :int, :compareTo, :BigDec %>
+  <%= wrap :BigDec, :divideToIntegralValue, :BigDec %>
+  <%= wrap :double, :doubleValue %>
+  <%= wrap :boolean, :equals, :Object %>
+  <%= wrap :float, :floatValue %>
+  <%= wrap :int, :hashCode %>
+  <%= wrap :int, :intValue %>
+  <%= wrap :int, :intValueExact %>
+  <%# XXX: longValue, longValueExact cannot be returned, should be implemented in Javascript %>
+  <%= wrap :BigDec, :max, :BigDec %>
+  <%= wrap :BigDec, :min, :BigDec %>
+  <%= wrap :BigDec, :movePointLeft, :int %>
+  <%= wrap :BigDec, :movePointRight, :int %>
+  <%= wrap :BigDec, :multiply, :BigDec %>
+  <%= wrap :BigDec, :negate %>
+  <%= wrap :BigDec, :plus %>
+  <%= wrap :BigDec, :pow, :int %>
+  <%= wrap :int, :precision %>
+  <%= wrap :BigDec, :remainder, :BigDec %>
+  <%= wrap :int, :scale %>
+  <%= wrap :BigDec, :scaleByPowerOfTen, :int %>
+  <%= wrap :short, :shortValueExact %>
+  <%= wrap :int, :signum %>
+  <%= wrap :BigDec, :stripTrailingZeros %>
+  <%= wrap :BigDec, :subtract, :BigDec %>
+  <%# TODO: toBigInteger, unscaledValue %>
+  <%= wrap :String, :toEngineeringString %>
+  <%= wrap :String, :toPlainString %>
+  <%= wrap :String, :toString %>
+  <%= wrap :BigDec, :ulp %>
+
+  static BigDec valueOf(InitParams opts) {
+    if(opts == null)
+      return null;
+
+    if(opts.has("double"))
+      return new BigDec(opts.getDouble("double"));
+    else if(opts.has("long")) {
+      if(false && opts.has("scale"))
+        //return new BigDec(opts.getLong("long"), opts.getInt("scale")); // TODO
+        return null;
+      else
+        return new BigDec(opts.getLong("long"));
+    }
+    else
+      return null;
+  }
+
+  <%#= wrap :BigDec, :setScale, :int %>
+  public BigDec setScale(int newScale, InitParams opts) {
+    BigDecimal result = (opts != null && opts.has("roundingMode"))
+      ? super.setScale(newScale, opts.getInt("roundingMode"))
+      : super.setScale(newScale);
+    return new BigDec(result);
+  }
+
+  <%#= wrap :BigDec, :divide, :BigDec %>
+  <%#= wrap :BigDec, :divide, :BigDec, :int %>
+  public BigDec divide(BigDec x, InitParams opts) {
+    BigDecimal result;
+
+    if(opts == null)
+      result = super.divide(x);
+    else {
+      if(!opts.has("roundingMode"))
+        result = super.divide(x);
+      else if(opts.has("scale"))
+        result = super.divide(x, opts.getInt("scale"), opts.getInt("roundingMode"));
+      else
+        result = super.divide(x, opts.getInt("roundingMode"));
+    }
+
+    return new BigDec(result);
+  }
+
+  public static native void log(String x) /*-{ $wnd.console.log(x); }-*/;
+
+  // Fields
+  <% %w[ ROUND_CEILING ROUND_DOWN ROUND_FLOOR ROUND_HALF_DOWN ROUND_HALF_EVEN ROUND_HALF_UP ROUND_UNNECESSARY ROUND_UP ].each do |field| %>
+    public static final int <%= field %> = BigDecimal.<%= field %>;
+  <% end %>
+
+  <% %w[ ONE TEN ZERO ].each do |field| %>
+    public static final BigDec <%= field %> = new BigDec(BigDecimal.<%= field %>);
+  <% end %>
+}
