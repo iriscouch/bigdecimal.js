@@ -14,31 +14,47 @@ public class BigDecimal extends java.math.BigDecimal implements Exportable {
     super("0");
   }
 
-  <% %w[ double int long String ].each do |type| %>
-    @NoExport
-    public BigDecimal(<%= type %> source) { super(source); }
-  <% end %>
-
   @NoExport
   public BigDecimal(java.math.BigDecimal source) {
     super(source.toString());
   }
 
-  // A shortcut to quickly convert a string to a BigDecimal
-  public static BigDecimal Create(InitParams params) {
-    if(params.has("String"))
-      return new BigDecimal(params.get("String"));
-    else if(params.has("double"))
-      return new BigDecimal(params.getNum("double"));
-    else if(params.has("int"))
-      return new BigDecimal(params.getNum("int"));
-    else if(params.has("long"))
-      return new BigDecimal(params.getNum("long"));
+  // Use a class method to wrap the constructor.
+  public static BigDecimal __init__(JsArgs args) {
+    String sig = JsArgs.signature(args);
+    java.math.BigDecimal obj;
 
-    // TODO: Maybe MathContext stuff?
-    return null;
+    if(sig == "BigInteger")
+      obj = new java.math.BigDecimal(args.getBigInteger(0));
+    else if(sig == "BigInteger number")
+      obj = new java.math.BigDecimal(args.getBigInteger(0), args.getInt(1));
+    else if(sig == "BigInteger number MathContext")
+      obj = new java.math.BigDecimal(args.getBigInteger(0), args.getInt(1), args.getMathContext(2));
+    else if(sig == "BigInteger MathContext")
+      obj = new java.math.BigDecimal(args.getBigInteger(0), args.getMathContext(1));
+    else if(sig == "array")
+      obj = new java.math.BigDecimal(args.getCharArray(0));
+    else if(sig == "array number number")
+      obj = new java.math.BigDecimal(args.getCharArray(0), args.getInt(1), args.getInt(2));
+    else if(sig == "array number number MathContext")
+      obj = new java.math.BigDecimal(args.getCharArray(0), args.getInt(1), args.getInt(2), args.getMathContext(3));
+    else if(sig == "array MathContext")
+      obj = new java.math.BigDecimal(args.getCharArray(0), args.getMathContext(1));
+    else if(sig == "number")
+      obj = new java.math.BigDecimal(args.getDouble(0));
+    else if(sig == "number MathContext")
+      obj = new java.math.BigDecimal(args.getDouble(0), args.getMathContext(1));
+    else if(sig == "string")
+      obj = new java.math.BigDecimal(args.getString(0));
+    else if(sig == "string MathContext")
+      obj = new java.math.BigDecimal(args.getString(0), args.getMathContext(1));
+    else
+      throw new RuntimeException("Unknown initialization signature: " + sig);
+
+    return new BigDecimal(obj);
   }
 
+  // TODO: These should probably be implemented with JsArgs.signature() now.
   <%= wrap :BigDecimal, :abs %>
   <%= wrap :BigDecimal, :add, :BigDecimal %>
   <%= wrap :byte, :byteValueExact %>
@@ -73,21 +89,8 @@ public class BigDecimal extends java.math.BigDecimal implements Exportable {
   <%= wrap :String, :toString %>
   <%= wrap :BigDecimal, :ulp %>
 
-  static BigDecimal valueOf(InitParams opts) {
-    if(opts == null)
-      return null;
-
-    if(opts.has("double"))
-      return new BigDecimal(opts.getDouble("double"));
-    else if(opts.has("long")) {
-      if(false && opts.has("scale"))
-        //return new BigDecimal(opts.getLong("long"), opts.getInt("scale")); // TODO
-        return null;
-      else
-        return new BigDecimal(opts.getLong("long"));
-    }
-    else
-      return null;
+  public static final BigDecimal valueOf(double val) {
+    return new BigDecimal(new java.math.BigDecimal(val));
   }
 
   <%#= wrap :BigDecimal, :setScale, :int %>
@@ -117,7 +120,27 @@ public class BigDecimal extends java.math.BigDecimal implements Exportable {
     return new BigDecimal(result);
   }
 
-  public static native void log(String x) /*-{ $wnd.console.log(x); }-*/;
+  public void x(JavaScriptObject... arguments) {
+    // Convert all the arguments to a JS Array.
+    log("Starting");
+    JsArgs args = JsArgs.Fresh();
+    //for(JavaScriptObject a : arguments) {
+    //for(int a = 0; a < arguments.length; a++) {
+      log(" will push");
+      //args.push(a);
+    //}
+    //args.push(args, arguments[0]);
+    log("Finished pushing");
+    logObj(args);
+  }
+
+  public static native void log(String x) /*-{
+    require("sys").puts(x);
+  }-*/;
+
+  public static native void logObj(JavaScriptObject x) /*-{
+    require("sys").puts("object: " + require("sys").inspect(x));
+  }-*/;
 
   // Fields
   <% %w[ ROUND_CEILING ROUND_DOWN ROUND_FLOOR ROUND_HALF_DOWN ROUND_HALF_EVEN ROUND_HALF_UP ROUND_UNNECESSARY ROUND_UP ].each do |field| %>

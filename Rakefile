@@ -40,10 +40,19 @@ file CJS_PATH => java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
     window = { "document": document };
     function gwtapp() {};
     <%= gwt_source %>
-    exports.BigDecimal = window.bigdecimal.BigDecimal;
     exports.BigInteger = window.bigdecimal.BigInteger;
     exports.RoundingMode = window.bigdecimal.RoundingMode;
     exports.MathContext = window.bigdecimal.MathContext;
+
+    // This is an unfortunate kludge because constructors cannot accept vararg parameters.
+    exports.BigDecimal = function wrap_constructor() {
+      var args = Array.prototype.slice.call(arguments);
+      return window.bigdecimal.BigDecimal.__init__(args);
+    };
+    for (var a in window.bigdecimal.BigDecimal) {
+      if(window.bigdecimal.BigDecimal.hasOwnProperty(a))
+        exports.BigDecimal[a] = window.bigdecimal.BigDecimal[a];
+    }
   EOT
 
   File.new(task.name, 'w').write(js.result binding)
