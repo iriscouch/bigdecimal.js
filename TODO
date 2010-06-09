@@ -1,5 +1,2 @@
-1. Figure out where the BigDec class is in terms of Javascript files
-2. Get it into a CommonJS file
-3. Confirm that it works in NodeJS and Spidermonkey
-
-4. BigInteger support, and possibly MathContext and RoundingMode
+* Improve the API to work as well as can be expected for a Javascript/Java hybrid
+* BigInteger support, and possibly MathContext and RoundingMode
