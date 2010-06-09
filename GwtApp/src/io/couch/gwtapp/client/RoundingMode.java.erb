@@ -1,0 +1,44 @@
+package io.couch.gwtapp.client;
+
+import org.timepedia.exporter.client.Export;
+import org.timepedia.exporter.client.NoExport;
+import org.timepedia.exporter.client.Exportable;
+import org.timepedia.exporter.client.ExportPackage;
+
+@ExportPackage("j")
+@Export
+public class RoundingMode implements Exportable {
+  private java.math.RoundingMode roundingMode;
+
+  public RoundingMode() {
+    this.roundingMode = java.math.RoundingMode.HALF_UP;
+  }
+
+  @NoExport
+  public RoundingMode(java.math.RoundingMode source) {
+    this.roundingMode = source;
+  }
+
+  public static RoundingMode valueOf(String rm) {
+    return new RoundingMode(java.math.RoundingMode.valueOf(rm));
+  }
+
+  public static RoundingMode[] values() {
+    java.math.RoundingMode[] rmodes = java.math.RoundingMode.values();
+    RoundingMode[] result = new RoundingMode[rmodes.length];
+    for(int a = 0; a < rmodes.length; a++)
+      result[a] = new RoundingMode(rmodes[a]);
+    return result;
+  }
+
+  @Export("name")
+  public String name() { return roundingMode.name(); }
+
+  @Export("toString")
+  public String toString() { return roundingMode.toString(); }
+
+  // XXX: Unforutnately to be exported, this class is not an enum and so these are functions for now.
+  <% %w[ CEILING DOWN FLOOR HALF_DOWN HALF_EVEN HALF_UP UNNECESSARY UP ].each do |field | %>
+    public static RoundingMode <%= field %>() { return new RoundingMode(java.math.RoundingMode.<%= field %>); }
+  <% end %>
+}

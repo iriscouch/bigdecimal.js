@@ -5,7 +5,8 @@ GWT  = "#{HERE}/GwtApp"
 GWT_SRC = "#{GWT}/src/io/couch/gwtapp/client"
 CJS_PATH = "#{HERE}/build/bigdecimal.js"
 
-%w[ BigDec ].each do |class_name|
+java_sources = %w[ BigDec RoundingMode ]
+java_sources.each do |class_name|
   file "#{GWT_SRC}/#{class_name}.java" => "#{GWT_SRC}/#{class_name}.java.erb" do |task|
     erb_path = task.prerequisites.first
     java_path = task.name
@@ -19,7 +20,7 @@ CJS_PATH = "#{HERE}/build/bigdecimal.js"
   end
 end
 
-file CJS_PATH => "#{GWT_SRC}/BigDec.java" do |task|
+file CJS_PATH => java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
   # Build the base GWT library.
   Dir.chdir GWT do
     sh 'ant build'
@@ -40,6 +41,7 @@ file CJS_PATH => "#{GWT_SRC}/BigDec.java" do |task|
     function gwtapp() {};
     <%= gwt_source %>
     exports.BigDec = window.j.BigDec;
+    exports.RoundingMode = window.j.RoundingMode;
   EOT
 
   File.new(task.name, 'w').write(js.result binding)
