@@ -1,7 +1,5 @@
 package io.couch.gwtapp.client;
 
-import java.math.BigDecimal;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.NoExport;
@@ -9,44 +7,43 @@ import org.timepedia.exporter.client.Exportable;
 import org.timepedia.exporter.client.ExportPackage;
 
 @ExportPackage("j")
-
 @Export
-public class BigDec extends BigDecimal implements Exportable {
+public class BigDecimal extends java.math.BigDecimal implements Exportable {
   // I think this constructor is needed for Javascript compatibility.
-  public BigDec() {
+  public BigDecimal() {
     super("0");
   }
 
   <% %w[ double int long String ].each do |type| %>
     @NoExport
-    public BigDec(<%= type %> source) { super(source); }
+    public BigDecimal(<%= type %> source) { super(source); }
   <% end %>
 
   @NoExport
-  public BigDec(BigDecimal source) {
+  public BigDecimal(java.math.BigDecimal source) {
     super(source.toString());
   }
 
-  // A shortcut to quickly convert a string to a BigDec
-  public static BigDec Create(InitParams params) {
+  // A shortcut to quickly convert a string to a BigDecimal
+  public static BigDecimal Create(InitParams params) {
     if(params.has("String"))
-      return new BigDec(params.get("String"));
+      return new BigDecimal(params.get("String"));
     else if(params.has("double"))
-      return new BigDec(params.getNum("double"));
+      return new BigDecimal(params.getNum("double"));
     else if(params.has("int"))
-      return new BigDec(params.getNum("int"));
+      return new BigDecimal(params.getNum("int"));
     else if(params.has("long"))
-      return new BigDec(params.getNum("long"));
+      return new BigDecimal(params.getNum("long"));
 
     // TODO: Maybe MathContext stuff?
     return null;
   }
 
-  <%= wrap :BigDec, :abs %>
-  <%= wrap :BigDec, :add, :BigDec %>
+  <%= wrap :BigDecimal, :abs %>
+  <%= wrap :BigDecimal, :add, :BigDecimal %>
   <%= wrap :byte, :byteValueExact %>
-  <%= wrap :int, :compareTo, :BigDec %>
-  <%= wrap :BigDec, :divideToIntegralValue, :BigDec %>
+  <%= wrap :int, :compareTo, :BigDecimal %>
+  <%= wrap :BigDecimal, :divideToIntegralValue, :BigDecimal %>
   <%= wrap :double, :doubleValue %>
   <%= wrap :boolean, :equals, :Object %>
   <%= wrap :float, :floatValue %>
@@ -54,57 +51,57 @@ public class BigDec extends BigDecimal implements Exportable {
   <%= wrap :int, :intValue %>
   <%= wrap :int, :intValueExact %>
   <%# XXX: longValue, longValueExact cannot be returned, should be implemented in Javascript %>
-  <%= wrap :BigDec, :max, :BigDec %>
-  <%= wrap :BigDec, :min, :BigDec %>
-  <%= wrap :BigDec, :movePointLeft, :int %>
-  <%= wrap :BigDec, :movePointRight, :int %>
-  <%= wrap :BigDec, :multiply, :BigDec %>
-  <%= wrap :BigDec, :negate %>
-  <%= wrap :BigDec, :plus %>
-  <%= wrap :BigDec, :pow, :int %>
+  <%= wrap :BigDecimal, :max, :BigDecimal %>
+  <%= wrap :BigDecimal, :min, :BigDecimal %>
+  <%= wrap :BigDecimal, :movePointLeft, :int %>
+  <%= wrap :BigDecimal, :movePointRight, :int %>
+  <%= wrap :BigDecimal, :multiply, :BigDecimal %>
+  <%= wrap :BigDecimal, :negate %>
+  <%= wrap :BigDecimal, :plus %>
+  <%= wrap :BigDecimal, :pow, :int %>
   <%= wrap :int, :precision %>
-  <%= wrap :BigDec, :remainder, :BigDec %>
+  <%= wrap :BigDecimal, :remainder, :BigDecimal %>
   <%= wrap :int, :scale %>
-  <%= wrap :BigDec, :scaleByPowerOfTen, :int %>
+  <%= wrap :BigDecimal, :scaleByPowerOfTen, :int %>
   <%= wrap :short, :shortValueExact %>
   <%= wrap :int, :signum %>
-  <%= wrap :BigDec, :stripTrailingZeros %>
-  <%= wrap :BigDec, :subtract, :BigDec %>
+  <%= wrap :BigDecimal, :stripTrailingZeros %>
+  <%= wrap :BigDecimal, :subtract, :BigDecimal %>
   <%# TODO: toBigInteger, unscaledValue %>
   <%= wrap :String, :toEngineeringString %>
   <%= wrap :String, :toPlainString %>
   <%= wrap :String, :toString %>
-  <%= wrap :BigDec, :ulp %>
+  <%= wrap :BigDecimal, :ulp %>
 
-  static BigDec valueOf(InitParams opts) {
+  static BigDecimal valueOf(InitParams opts) {
     if(opts == null)
       return null;
 
     if(opts.has("double"))
-      return new BigDec(opts.getDouble("double"));
+      return new BigDecimal(opts.getDouble("double"));
     else if(opts.has("long")) {
       if(false && opts.has("scale"))
-        //return new BigDec(opts.getLong("long"), opts.getInt("scale")); // TODO
+        //return new BigDecimal(opts.getLong("long"), opts.getInt("scale")); // TODO
         return null;
       else
-        return new BigDec(opts.getLong("long"));
+        return new BigDecimal(opts.getLong("long"));
     }
     else
       return null;
   }
 
-  <%#= wrap :BigDec, :setScale, :int %>
-  public BigDec setScale(int newScale, InitParams opts) {
-    BigDecimal result = (opts != null && opts.has("roundingMode"))
+  <%#= wrap :BigDecimal, :setScale, :int %>
+  public BigDecimal setScale(int newScale, InitParams opts) {
+    java.math.BigDecimal result = (opts != null && opts.has("roundingMode"))
       ? super.setScale(newScale, opts.getInt("roundingMode"))
       : super.setScale(newScale);
-    return new BigDec(result);
+    return new BigDecimal(result);
   }
 
-  <%#= wrap :BigDec, :divide, :BigDec %>
-  <%#= wrap :BigDec, :divide, :BigDec, :int %>
-  public BigDec divide(BigDec x, InitParams opts) {
-    BigDecimal result;
+  <%#= wrap :BigDecimal, :divide, :BigDecimal %>
+  <%#= wrap :BigDecimal, :divide, :BigDecimal, :int %>
+  public BigDecimal divide(BigDecimal x, InitParams opts) {
+    java.math.BigDecimal result;
 
     if(opts == null)
       result = super.divide(x);
@@ -117,17 +114,18 @@ public class BigDec extends BigDecimal implements Exportable {
         result = super.divide(x, opts.getInt("roundingMode"));
     }
 
-    return new BigDec(result);
+    return new BigDecimal(result);
   }
 
   public static native void log(String x) /*-{ $wnd.console.log(x); }-*/;
 
   // Fields
   <% %w[ ROUND_CEILING ROUND_DOWN ROUND_FLOOR ROUND_HALF_DOWN ROUND_HALF_EVEN ROUND_HALF_UP ROUND_UNNECESSARY ROUND_UP ].each do |field| %>
-    public static final int <%= field %> = BigDecimal.<%= field %>;
+    public static final int <%= field %> = java.math.BigDecimal.<%= field %>;
   <% end %>
 
+  // TODO: Make these actual fields
   <% %w[ ONE TEN ZERO ].each do |field| %>
-    public static final BigDec <%= field %> = new BigDec(BigDecimal.<%= field %>);
+    public static final BigDecimal <%= field %>() { return new BigDecimal(java.math.BigDecimal.<%= field %>); }
   <% end %>
 }

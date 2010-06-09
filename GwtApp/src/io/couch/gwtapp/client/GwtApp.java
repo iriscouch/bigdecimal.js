@@ -16,6 +16,6 @@ public class GwtApp implements EntryPoint {
     ((Exporter) GWT.create(RoundingMode.class)).export();
     ((Exporter) GWT.create(MathContext.class)).export();
     ((Exporter) GWT.create(io.couch.gwtapp.client.BigInteger.class)).export();
-    ((Exporter) GWT.create(BigDec.class)).export();
+    ((Exporter) GWT.create(io.couch.gwtapp.client.BigDecimal.class)).export();
   }
 }

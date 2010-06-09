@@ -5,7 +5,7 @@ GWT  = "#{HERE}/GwtApp"
 GWT_SRC = "#{GWT}/src/io/couch/gwtapp/client"
 CJS_PATH = "#{HERE}/build/bigdecimal.js"
 
-java_sources = %w[ BigDec RoundingMode MathContext BigInteger ]
+java_sources = %w[ RoundingMode MathContext BigInteger BigDecimal ]
 java_sources.each do |class_name|
   file "#{GWT_SRC}/#{class_name}.java" => "#{GWT_SRC}/#{class_name}.java.erb" do |task|
     erb_path = task.prerequisites.first
@@ -40,7 +40,7 @@ file CJS_PATH => java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
     window = { "document": document };
     function gwtapp() {};
     <%= gwt_source %>
-    exports.BigDecimal = window.j.BigDec;
+    exports.BigDecimal = window.j.BigDecimal;
     exports.BigInteger = window.j.BigInteger;
     exports.RoundingMode = window.j.RoundingMode;
     exports.MathContext = window.j.MathContext;
