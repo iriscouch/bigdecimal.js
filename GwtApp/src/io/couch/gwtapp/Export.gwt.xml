@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module>
+<module rename-to='gwtapp'>
   <inherits name='io.couch.gwtapp.GwtApp'/>
   <inherits name='org.timepedia.exporter.Exporter'/>
   <set-property name='export' value='yes'/>
-
   <add-linker name='xs'/>
+
+  <!-- user.agent options: opera, safari, ie8, ie6, gecko1_8, gecko, unknown -->
+  <set-property name='user.agent' value='safari'/>
 </module>
