@@ -40,10 +40,10 @@ file CJS_PATH => java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
     window = { "document": document };
     function gwtapp() {};
     <%= gwt_source %>
-    exports.BigDecimal = window.j.BigDecimal;
-    exports.BigInteger = window.j.BigInteger;
-    exports.RoundingMode = window.j.RoundingMode;
-    exports.MathContext = window.j.MathContext;
+    exports.BigDecimal = window.bigdecimal.BigDecimal;
+    exports.BigInteger = window.bigdecimal.BigInteger;
+    exports.RoundingMode = window.bigdecimal.RoundingMode;
+    exports.MathContext = window.bigdecimal.MathContext;
   EOT
 
   File.new(task.name, 'w').write(js.result binding)
