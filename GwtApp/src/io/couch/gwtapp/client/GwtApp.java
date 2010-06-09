@@ -13,15 +13,9 @@ public class GwtApp implements EntryPoint {
    * This is the entry point method.
    */
   public void onModuleLoad() {
-    //((Exporter) GWT.create(Jason.class)).export();
-    ((Exporter) GWT.create(BigDec.class)).export();
     ((Exporter) GWT.create(RoundingMode.class)).export();
     ((Exporter) GWT.create(MathContext.class)).export();
-    onLoadImpl();
+    ((Exporter) GWT.create(io.couch.gwtapp.client.BigInteger.class)).export();
+    ((Exporter) GWT.create(BigDec.class)).export();
   }
-
-  private native void onLoadImpl() /*-{
-    if($wnd.console && $wnd.console.log)
-      $wnd.console.log("Loaded");
-  }-*/;
 }
