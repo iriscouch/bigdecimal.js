@@ -16,6 +16,7 @@ public class GwtApp implements EntryPoint {
     //((Exporter) GWT.create(Jason.class)).export();
     ((Exporter) GWT.create(BigDec.class)).export();
     ((Exporter) GWT.create(RoundingMode.class)).export();
+    ((Exporter) GWT.create(MathContext.class)).export();
     onLoadImpl();
   }
 

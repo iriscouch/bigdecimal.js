@@ -1,0 +1,30 @@
+package io.couch.gwtapp.client;
+
+import org.timepedia.exporter.client.Export;
+import org.timepedia.exporter.client.NoExport;
+import org.timepedia.exporter.client.Exportable;
+import org.timepedia.exporter.client.ExportPackage;
+
+@ExportPackage("j")
+@Export
+public class MathContext implements Exportable {
+  private java.math.MathContext mathContext;
+
+  public MathContext() {
+    this.mathContext = java.math.MathContext.UNLIMITED;
+  }
+
+  public MathContext(String val) {
+    this.mathContext = new java.math.MathContext(val);
+  }
+
+  public int getPrecision() { return mathContext.getPrecision(); }
+  public RoundingMode getRoundingMode() { return new RoundingMode(mathContext.getRoundingMode()); }
+  public int hashCode() { return mathContext.hashCode(); }
+  public String toString() { return mathContext.toString(); }
+
+  // XXX: These are not exporting correctly so for now they are functions.
+  <% %w[ DECIMAL128 DECIMAL32 DECIMAL64 UNLIMITED ].each do |field| %>
+    public static final MathContext <%= field %>() { return new MathContext(java.math.MathContext.<%= field %>.toString()); }
+  <% end %>
+}
