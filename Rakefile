@@ -26,12 +26,13 @@ file CJS_PATH => "#{GWT_SRC}/BigDec.java" do |task|
   end
 
   gwt_js = Dir.glob("#{GWT}/war/gwtapp/#{'?' * 32}.cache.js").last
+  puts "Using compiled JS: #{gwt_js}"
   gwt_source = File.new(gwt_js).read
 
   # Insert the code required to initialize the library. This is text manipulation to reach inside
   # a function closure. Better ideas welcome!
   loader = "gwtOnLoad(null, 'ModuleName', 'moduleBase');"
-  gwt_source.gsub! /(}\)\(\);)$/, "\n\n#{loader}\n\\1"
+  gwt_source.gsub! /(}\)\(\);)$/, "\n#{loader}\n\\1"
 
   js = ERB.new <<-EOT
     document = {};
