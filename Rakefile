@@ -46,7 +46,7 @@ file CJS_PATH => "#{GWT_SRC}/BigDec.java" do |task|
   puts "Generated #{File.basename task.name}"
 end
 
-desc 'Build CommonJS library'
-task :commonjs => CJS_PATH
+desc 'Build CommonJS BigDecimal library'
+task :bigdecimal => CJS_PATH
 
-task :default => :commonjs
+task :default => :bigdecimal
