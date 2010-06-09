@@ -53,3 +53,21 @@ desc 'Build CommonJS BigDecimal library'
 task :bigdecimal => CJS_PATH
 
 task :default => :bigdecimal
+
+#
+# Helpers
+#
+
+def wrap(return_type, name, *param_types)
+  formal = []; actual = []
+  param_types.each_with_index do |param_type, a|
+    formal.push "#{param_type} var#{a}"
+    actual.push "var#{a}"
+  end
+
+  call = "super.#{name}(#{actual.join ', '})"
+  expr = call
+  expr = "new #{return_type}(#{call})" if return_type.to_s[0..2] == 'Big'
+
+  "public #{return_type} #{name}(#{formal.join ', '}) { return #{expr}; }"
+end

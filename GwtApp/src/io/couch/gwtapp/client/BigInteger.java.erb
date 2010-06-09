@@ -1,0 +1,89 @@
+package io.couch.gwtapp.client;
+
+import com.google.gwt.core.client.JavaScriptObject;
+import org.timepedia.exporter.client.Export;
+import org.timepedia.exporter.client.NoExport;
+import org.timepedia.exporter.client.Exportable;
+import org.timepedia.exporter.client.ExportPackage;
+
+@ExportPackage("j")
+@Export
+public class BigInteger extends java.math.BigInteger implements Exportable {
+  // I think this constructor is needed for Javascript compatibility.
+  public BigInteger() {
+    super("0");
+  }
+
+  public BigInteger(String val) {
+    super(val);
+  }
+
+  @NoExport
+  public BigInteger(java.math.BigInteger source) {
+    super(source.toString());
+  }
+
+  <%= wrap :BigInteger, :abs %>
+  <%= wrap :BigInteger, :add, :BigInteger %>
+  <%= wrap :BigInteger, :and, :BigInteger %>
+  <%= wrap :BigInteger, :andNot, :BigInteger %>
+  <%= wrap :int, :bitCount %>
+  <%= wrap :int, :bitLength %>
+  <%= wrap :BigInteger, :clearBit, :int %>
+  <%= wrap :int, :compareTo, :BigInteger %>
+  <%= wrap :BigInteger, :divide, :BigInteger %>
+  <%= wrap :double, :doubleValue %>
+  <%= wrap :boolean, :equals, :Object %>
+  <%= wrap :BigInteger, :flipBit, :int %>
+  <%= wrap :float, :floatValue %>
+  <%= wrap :BigInteger, :gcd, :BigInteger %>
+  <%= wrap :int, :getLowestSetBit %>
+  <%= wrap :int, :hashCode %>
+  <%= wrap :int, :intValue %>
+  <%= wrap :boolean, :isProbablePrime, :int %>
+  <%= wrap :BigInteger, :max, :BigInteger %>
+  <%= wrap :BigInteger, :min, :BigInteger %>
+  <%= wrap :BigInteger, :mod, :BigInteger %>
+  <%= wrap :BigInteger, :modInverse, :BigInteger %>
+  <%= wrap :BigInteger, :modPow, :BigInteger, :BigInteger %>
+  <%= wrap :BigInteger, :multiply, :BigInteger %>
+  <%= wrap :BigInteger, :negate %>
+  <%= wrap :BigInteger, :nextProbablePrime %>
+  <%= wrap :BigInteger, :not %>
+  <%= wrap :BigInteger, :or, :BigInteger %>
+  <%= wrap :BigInteger, :pow, :int %>
+  <%#= wrap :BigInteger, :probablePrime, :Random %>
+  <%= wrap :BigInteger, :remainder, :BigInteger %>
+  <%= wrap :BigInteger, :setBit, :int %>
+  <%= wrap :BigInteger, :shiftLeft, :int %>
+  <%= wrap :BigInteger, :shiftRight, :int %>
+  <%= wrap :int, :signum %>
+  <%= wrap :BigInteger, :subtract, :BigInteger %>
+  <%= wrap :boolean, :testBit, :int %>
+  <%#= wrap 'byte[]', :toByteArray %>
+  <%= wrap :String, :toString %>
+  <%= wrap :BigInteger, :xor, :BigInteger %>
+
+  public BigInteger[] divideAndRemainder(BigInteger val) {
+    java.math.BigInteger[] bigints = super.divideAndRemainder(val);
+    BigInteger[] result = new BigInteger[bigints.length];
+    for(int a = 0; a < bigints.length; a++)
+      result[a] = new BigInteger(bigints[a]);
+    return result;
+  }
+
+  // JSNI does not support long so use Javascript Number instead.
+  @Export("longValue")
+  public double longValueAsDouble() {
+    return doubleValue();
+  }
+
+  public static BigInteger valueOf(double val) {
+    return new BigInteger(java.math.BigInteger.valueOf((long)val));
+  }
+
+  // TODO: Figure out how to convert these to proper fields.
+  <% %w[ ONE TEN ZERO ].each do |field| %>
+    public static final BigInteger <%= field %>() { return new BigInteger(java.math.BigInteger.<%= field %>); };
+  <% end %>
+}

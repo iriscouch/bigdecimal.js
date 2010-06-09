@@ -42,22 +42,6 @@ public class BigDec extends BigDecimal implements Exportable {
     return null;
   }
 
-  <%
-    def wrap(return_type, name, *param_types)
-      formal = []; actual = []
-      param_types.each_with_index do |param_type, a|
-        formal.push "#{param_type} var#{a}"
-        actual.push "var#{a}"
-      end
-
-      call = "super.#{name}(#{actual.join ', '})"
-      expr = call
-      expr = "new BigDec(#{call})" if return_type == :BigDec
-
-      "public #{return_type} #{name}(#{formal.join ', '}) { return #{expr}; }"
-    end
-  %>
-
   <%= wrap :BigDec, :abs %>
   <%= wrap :BigDec, :add, :BigDec %>
   <%= wrap :byte, :byteValueExact %>
