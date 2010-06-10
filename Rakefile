@@ -101,6 +101,32 @@ task :bigdecimal => CJS_PATH
 
 task :default => :bigdecimal
 
+desc 'Clean up'
+task :clean do
+  sh "rm -vf #{CJS_PATH} #{GWT_SRC}/Big*.java"
+end
+
+desc 'Show how to tag a revision'
+task :tag do
+  puts <<EOT
+How to Tag a Release
+====================
+
+I do not like generated code being managed by Git. However that is useful
+when people download tarballs from GitHub, etc. So the idea is to have a
+revision "spur" off the development line which only generates the code
+and commits the tag.
+
+ 1. Confirm the repo is clean
+ 2. rake clean && rake
+ 3. git add -f #{CJS_PATH} && git commit -m 'Code drop'
+ 4. ver="vX.Y" # Set this to something.
+ 5. git tag -a -m "Tag release" "$ver"
+ 6. git push --tags
+ 7. git reset --hard "$ver"^
+EOT
+end
+
 #
 # Helpers
 #
