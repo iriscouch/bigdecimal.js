@@ -52,12 +52,25 @@ file CJS_PATH => java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
       if(Src.__init__) {
         Fixed = function wrap_constructor() {
           var args = Array.prototype.slice.call(arguments);
-          return window.bigdecimal.BigDecimal.__init__(args);
+          return Src.__init__(args);
         };
 
+        Fixed.prototype = Src.prototype;
         for (var a in Src)
           if(Src.hasOwnProperty(a))
             Fixed[a] = Src[a];
+      }
+
+      var proto = Fixed.prototype;
+      for (var a in proto) {
+        if(proto.hasOwnProperty(a) && (typeof proto[a] == 'function') && a.match(/_va$/)) {
+          var inner = proto[a];
+          proto[a.replace(/_va$/, '')] = function() {
+            var args = Array.prototype.slice.call(arguments);
+            return inner.apply(this, [args]);
+          };
+          delete proto[a];
+        }
       }
 
       exports[class_name] = Fixed;
