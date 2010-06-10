@@ -116,7 +116,7 @@ def wrap(return_type, name, *signatures)
 
   lines << "// return_type.to_s[0..2] = #{return_type.to_s[0..2]}"
   if return_type.to_s[0..2] != 'Big'
-    call = "result = super"
+    call = "result = super.#{name}"
   else
     lines << "java.math.#{return_type} interim;"
     call = "interim = super.#{name}"
@@ -149,7 +149,7 @@ def call_signatures(args, expression, *signatures)
   signatures.each_with_index do |sig, a|
     js_types = []
     param_types = []
-    sig.split.each do |param, a|
+    sig.to_s.split.each do |param, a|
       if %w[ int double ].include? param
         js_types << 'number'
         param_types << param.capitalize
