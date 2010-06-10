@@ -81,3 +81,36 @@ def wrap(return_type, name, *param_types)
 
   "public #{return_type} #{name}(#{formal.join ', '}) { return #{expr}; }"
 end
+
+def call_signatures(args, expression, *signatures)
+  lines = []
+  lines << "String sig = JsArgs.signature(#{args});"
+  signatures.each_with_index do |sig, a|
+    js_types = []
+    param_types = []
+    sig.split.each do |param, a|
+      if %w[ int double ].include? param
+        js_types << 'number'
+        param_types << param.capitalize
+      elsif param == 'string'
+        js_types << 'string'
+        param_types << 'String'
+      elsif param == 'char_array'
+        js_types << 'array'
+        param_types << 'CharArray'
+      else
+        js_types << param
+        param_types << param
+      end
+    end
+    lines << "#{a == 0 ? 'if' : 'else if'}(sig == \"#{js_types.join ' '}\")"
+    actuals = []
+    param_types.each_with_index do |param_type, b|
+      actuals << "#{args}.get#{param_type}(#{b})"
+    end
+    lines << "  #{expression}(#{actuals.join ', '});"
+  end
+
+  lines << "else throw new RuntimeException(\"Unknown call signature: \" + sig);"
+  return lines.join("\n");
+end
