@@ -123,6 +123,6 @@ def call_signatures(args, expression, *signatures)
     lines << "  #{expression}(#{actuals.join ', '});"
   end
 
-  lines << "else throw new RuntimeException(\"Unknown call signature: \" + sig);"
+  lines << "else throw new RuntimeException(\"Unknown call signature for #{expression}: \" + sig);"
   return lines.join("\n");
 end
