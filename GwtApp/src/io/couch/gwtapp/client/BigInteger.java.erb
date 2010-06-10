@@ -18,6 +18,13 @@ public class BigInteger extends java.math.BigInteger implements Exportable {
     super(val);
   }
 
+  // Use a class method to wrap the constructor.
+  public static BigInteger __init__(JsArgs args) {
+    java.math.BigInteger obj;
+    <%= call_signatures 'args', 'obj = new java.math.BigInteger', 'string', 'string int' %>
+    return new BigInteger(obj);
+  }
+
   @NoExport
   public BigInteger(java.math.BigInteger source) {
     super(source.toString());
@@ -45,7 +52,7 @@ public class BigInteger extends java.math.BigInteger implements Exportable {
   <%= wrap :BigInteger, :min, :BigInteger %>
   <%= wrap :BigInteger, :mod, :BigInteger %>
   <%= wrap :BigInteger, :modInverse, :BigInteger %>
-  <%= wrap :BigInteger, :modPow, :BigInteger, :BigInteger %>
+  <%= wrap_nosigs :BigInteger, :modPow, :BigInteger, :BigInteger %>
   <%= wrap :BigInteger, :multiply, :BigInteger %>
   <%= wrap :BigInteger, :negate %>
   <%= wrap :BigInteger, :nextProbablePrime %>
@@ -61,7 +68,7 @@ public class BigInteger extends java.math.BigInteger implements Exportable {
   <%= wrap :BigInteger, :subtract, :BigInteger %>
   <%= wrap :boolean, :testBit, :int %>
   <%#= wrap 'byte[]', :toByteArray %>
-  <%= wrap :String, :toString %>
+  <%= wrap :String, :toString, '', 'int' %>
   <%= wrap :BigInteger, :xor, :BigInteger %>
 
   public BigInteger[] divideAndRemainder(BigInteger val) {
