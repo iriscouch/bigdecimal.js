@@ -56,9 +56,21 @@ file CJS_PATH => java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
         };
 
         Fixed.prototype = Src.prototype;
+
         for (var a in Src)
-          if(Src.hasOwnProperty(a))
-            Fixed[a] = Src[a];
+          if(Src.hasOwnProperty(a)) {
+            if((typeof Src[a] != 'function') || !a.match(/_va$/))
+              Fixed[a] = Src[a];
+            else {
+              var pub_name = a.replace(/_va$/, '');
+              Fixed[pub_name] = function wrap_classmeth () {
+                var args = Array.prototype.slice.call(arguments);
+                return wrap_classmeth.inner_method(args);
+              };
+              Fixed[pub_name].inner_method = Src[a];
+            }
+          }
+
       }
 
       var proto = Fixed.prototype;
