@@ -78,11 +78,12 @@ file CJS_PATH => ["#{HERE}/build"] + java_sources.map{|x| "#{GWT_SRC}/#{x}.java"
       var proto = Fixed.prototype;
       for (var a in proto) {
         if(proto.hasOwnProperty(a) && (typeof proto[a] == 'function') && a.match(/_va$/)) {
-          var inner = proto[a];
-          proto[a.replace(/_va$/, '')] = function() {
+          var pub_name = a.replace(/_va$/, '');
+          proto[pub_name] = function wrap_meth() {
             var args = Array.prototype.slice.call(arguments);
-            return inner.apply(this, [args]);
+            return wrap_meth.inner_method.apply(this, [args]);
           };
+          proto[pub_name].inner_method = proto[a];
           delete proto[a];
         }
       }
