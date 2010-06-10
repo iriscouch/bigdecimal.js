@@ -23,7 +23,7 @@ end
 file CJS_PATH => java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
   # Build the base GWT library.
   Dir.chdir GWT do
-    sh 'ant build'
+    sh 'ant build' unless ENV['skip_ant']
   end
 
   gwt_js = Dir.glob("#{GWT}/war/gwtapp/#{'?' * 32}.cache.js").last
