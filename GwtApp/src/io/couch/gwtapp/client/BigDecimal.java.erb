@@ -21,36 +21,21 @@ public class BigDecimal extends java.math.BigDecimal implements Exportable {
 
   // Use a class method to wrap the constructor.
   public static BigDecimal __init__(JsArgs args) {
-    String sig = JsArgs.signature(args);
     java.math.BigDecimal obj;
-
-    if(sig == "BigInteger")
-      obj = new java.math.BigDecimal(args.getBigInteger(0));
-    else if(sig == "BigInteger number")
-      obj = new java.math.BigDecimal(args.getBigInteger(0), args.getInt(1));
-    else if(sig == "BigInteger number MathContext")
-      obj = new java.math.BigDecimal(args.getBigInteger(0), args.getInt(1), args.getMathContext(2));
-    else if(sig == "BigInteger MathContext")
-      obj = new java.math.BigDecimal(args.getBigInteger(0), args.getMathContext(1));
-    else if(sig == "array")
-      obj = new java.math.BigDecimal(args.getCharArray(0));
-    else if(sig == "array number number")
-      obj = new java.math.BigDecimal(args.getCharArray(0), args.getInt(1), args.getInt(2));
-    else if(sig == "array number number MathContext")
-      obj = new java.math.BigDecimal(args.getCharArray(0), args.getInt(1), args.getInt(2), args.getMathContext(3));
-    else if(sig == "array MathContext")
-      obj = new java.math.BigDecimal(args.getCharArray(0), args.getMathContext(1));
-    else if(sig == "number")
-      obj = new java.math.BigDecimal(args.getDouble(0));
-    else if(sig == "number MathContext")
-      obj = new java.math.BigDecimal(args.getDouble(0), args.getMathContext(1));
-    else if(sig == "string")
-      obj = new java.math.BigDecimal(args.getString(0));
-    else if(sig == "string MathContext")
-      obj = new java.math.BigDecimal(args.getString(0), args.getMathContext(1));
-    else
-      throw new RuntimeException("Unknown initialization signature: " + sig);
-
+    <%= call_signatures 'args', 'obj = new java.math.BigDecimal',
+      "BigInteger",
+      "BigInteger int",
+      "BigInteger int MathContext",
+      "BigInteger MathContext",
+      "char_array",
+      "char_array int int",
+      "char_array int int MathContext",
+      "char_array MathContext",
+      "double",
+      "double MathContext",
+      "string",
+      "string MathContext",
+    %>
     return new BigDecimal(obj);
   }
 
