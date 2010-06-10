@@ -39,20 +39,32 @@ file CJS_PATH => java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
     document = {};
     window = { "document": document };
     function gwtapp() {};
+
     <%= gwt_source %>
-    exports.BigInteger = window.bigdecimal.BigInteger;
+
     exports.RoundingMode = window.bigdecimal.RoundingMode;
     exports.MathContext = window.bigdecimal.MathContext;
 
-    // This is an unfortunate kludge because constructors cannot accept vararg parameters.
-    exports.BigDecimal = function wrap_constructor() {
-      var args = Array.prototype.slice.call(arguments);
-      return window.bigdecimal.BigDecimal.__init__(args);
+    // This is an unfortunate kludge because Java methods and constructors cannot accept vararg parameters.
+    var fix_and_export = function(class_name) {
+      var Src = window.bigdecimal[class_name];
+      var Fixed = Src;
+      if(Src.__init__) {
+        Fixed = function wrap_constructor() {
+          var args = Array.prototype.slice.call(arguments);
+          return window.bigdecimal.BigDecimal.__init__(args);
+        };
+
+        for (var a in Src)
+          if(Src.hasOwnProperty(a))
+            Fixed[a] = Src[a];
+      }
+
+      exports[class_name] = Fixed;
     };
-    for (var a in window.bigdecimal.BigDecimal) {
-      if(window.bigdecimal.BigDecimal.hasOwnProperty(a))
-        exports.BigDecimal[a] = window.bigdecimal.BigDecimal[a];
-    }
+
+    fix_and_export('BigDecimal');
+    fix_and_export('BigInteger');
   EOT
 
   File.new(task.name, 'w').write(js.result binding)
