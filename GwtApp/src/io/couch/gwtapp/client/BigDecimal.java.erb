@@ -105,20 +105,6 @@ public class BigDecimal extends java.math.BigDecimal implements Exportable {
     return new BigDecimal(result);
   }
 
-  public void x(JavaScriptObject... arguments) {
-    // Convert all the arguments to a JS Array.
-    log("Starting");
-    JsArgs args = JsArgs.Fresh();
-    //for(JavaScriptObject a : arguments) {
-    //for(int a = 0; a < arguments.length; a++) {
-      log(" will push");
-      //args.push(a);
-    //}
-    //args.push(args, arguments[0]);
-    log("Finished pushing");
-    logObj(args);
-  }
-
   public static native void log(String x) /*-{
     require("sys").puts(x);
   }-*/;
