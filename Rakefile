@@ -122,7 +122,7 @@ and commits the tag.
 
  1. Confirm the repo is clean
  2. rake clean && rake
- 3. git add -f #{CJS_PATH} && git commit -m 'Code drop'
+ 3. git add -f #{CJS_PATH} && git commit -m "Code release"
  4. ver="vX.Y" # Set this to something.
  5. git tag -a -m "Tag release" "$ver"
  6. git push --tags
