@@ -25,6 +25,14 @@ class JsArgs extends JavaScriptObject {
     return new java.math.BigInteger(getString(key));
   };
 
+  public final java.math.BigDecimal getBigDecimal(int key) {
+    return new java.math.BigDecimal(getString(key));
+  }
+
+  public final java.math.RoundingMode getRoundingMode(int key) {
+    return java.math.RoundingMode.valueOf(getString(key));
+  }
+
   public final java.math.MathContext getMathContext(int key) {
     return new java.math.MathContext(getString(key));
   }
