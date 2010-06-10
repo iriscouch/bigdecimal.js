@@ -20,7 +20,9 @@ java_sources.each do |class_name|
   end
 end
 
-file CJS_PATH => java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
+directory "#{HERE}/build"
+
+file CJS_PATH => ["#{HERE}/build"] + java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
   # Build the base GWT library.
   Dir.chdir GWT do
     sh 'ant build' unless ENV['skip_ant']
@@ -103,7 +105,7 @@ task :default => :bigdecimal
 
 desc 'Clean up'
 task :clean do
-  sh "rm -vf #{CJS_PATH} #{GWT_SRC}/Big*.java"
+  sh "rm -rfv #{HERE}/build #{GWT_SRC}/Big*.java"
 end
 
 desc 'Show how to tag a revision'
