@@ -39,8 +39,16 @@ public class BigDecimal extends java.math.BigDecimal implements Exportable {
     return new BigDecimal(obj);
   }
 
+  public BigDecimal abs_va(JsArgs args) {
+    java.math.BigDecimal obj;
+    <%= call_signatures 'args', 'obj = super.abs',
+      '',
+      'MathContext'
+    %>
+    return new BigDecimal(obj);
+  }
+
   // TODO: These should probably be implemented with JsArgs.signature() now.
-  <%= wrap :BigDecimal, :abs %>
   <%= wrap :BigDecimal, :add, :BigDecimal %>
   <%= wrap :byte, :byteValueExact %>
   <%= wrap :int, :compareTo, :BigDecimal %>
