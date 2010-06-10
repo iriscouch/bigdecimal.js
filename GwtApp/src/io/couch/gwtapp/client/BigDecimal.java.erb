@@ -39,78 +39,64 @@ public class BigDecimal extends java.math.BigDecimal implements Exportable {
     return new BigDecimal(obj);
   }
 
-  public BigDecimal abs_va(JsArgs args) {
-    java.math.BigDecimal obj;
-    <%= call_signatures 'args', 'obj = super.abs',
-      '',
-      'MathContext'
-    %>
-    return new BigDecimal(obj);
-  }
-
-  // TODO: These should probably be implemented with JsArgs.signature() now.
-  <%= wrap :BigDecimal, :add, :BigDecimal %>
+  <%= wrap :BigDecimal, :abs, '', 'MathContext' %>
+  <%= wrap :BigDecimal, :add, 'BigDecimal', 'BigDecimal MathContext' %>
   <%= wrap :byte, :byteValueExact %>
   <%= wrap :int, :compareTo, :BigDecimal %>
-  <%= wrap :BigDecimal, :divideToIntegralValue, :BigDecimal %>
+  <%= wrap :BigDecimal, :divide, 'BigDecimal', 'BigDecimal int', 'BigDecimal int int', 'BigDecimal int RoundingMode', 'BigDecimal MathContext', 'BigDecimal RoundingMode' %>
+  <%= wrap :BigDecimal, :divideToIntegralValue, 'BigDecimal', 'BigDecimal MathContext' %>
   <%= wrap :double, :doubleValue %>
   <%= wrap :boolean, :equals, :Object %>
   <%= wrap :float, :floatValue %>
   <%= wrap :int, :hashCode %>
   <%= wrap :int, :intValue %>
   <%= wrap :int, :intValueExact %>
-  <%# XXX: longValue, longValueExact cannot be returned, should be implemented in Javascript %>
   <%= wrap :BigDecimal, :max, :BigDecimal %>
   <%= wrap :BigDecimal, :min, :BigDecimal %>
   <%= wrap :BigDecimal, :movePointLeft, :int %>
   <%= wrap :BigDecimal, :movePointRight, :int %>
-  <%= wrap :BigDecimal, :multiply, :BigDecimal %>
-  <%= wrap :BigDecimal, :negate %>
-  <%= wrap :BigDecimal, :plus %>
-  <%= wrap :BigDecimal, :pow, :int %>
+  <%= wrap :BigDecimal, :multiply, 'BigDecimal', 'BigDecimal MathContext' %>
+  <%= wrap :BigDecimal, :negate, '', 'MathContext' %>
+  <%= wrap :BigDecimal, :plus, '', 'MathContext' %>
+  <%= wrap :BigDecimal, :pow, 'int', 'int MathContext' %>
   <%= wrap :int, :precision %>
-  <%= wrap :BigDecimal, :remainder, :BigDecimal %>
+  <%= wrap :BigDecimal, :remainder, 'BigDecimal', 'BigDecimal MathContext' %>
+  <%= wrap :BigDecimal, :round, :MathContext %>
   <%= wrap :int, :scale %>
   <%= wrap :BigDecimal, :scaleByPowerOfTen, :int %>
+  <%= wrap :BigDecimal, :setScale, 'int', 'int int', 'int RoundingMode' %>
   <%= wrap :short, :shortValueExact %>
   <%= wrap :int, :signum %>
   <%= wrap :BigDecimal, :stripTrailingZeros %>
-  <%= wrap :BigDecimal, :subtract, :BigDecimal %>
-  <%# TODO: toBigInteger, unscaledValue %>
+  <%= wrap :BigDecimal, :subtract, 'BigDecimal', 'BigDecimal MathContext' %>
+  <%= wrap :BigInteger, :toBigInteger %>
+  <%= wrap :BigInteger, :toBigIntegerExact %>
   <%= wrap :String, :toEngineeringString %>
   <%= wrap :String, :toPlainString %>
   <%= wrap :String, :toString %>
   <%= wrap :BigDecimal, :ulp %>
+  <%= wrap :BigInteger, :unscaledValue %>
 
-  public static final BigDecimal valueOf(double val) {
-    return new BigDecimal(new java.math.BigDecimal(val));
+  public BigDecimal[] divideAndRemainder_va(JsArgs args) {
+    java.math.BigDecimal[] interim;
+    <%= call_signatures 'args', 'interim = super.divideAndRemainder', 'BigDecimal', 'BigDecimal MathContext' %>
+
+    BigDecimal[] result = new BigDecimal[interim.length];
+    for(int a = 0; a < interim.length; a++)
+      result[a] = new BigDecimal(interim[a]);
+    return result;
   }
 
-  <%#= wrap :BigDecimal, :setScale, :int %>
-  public BigDecimal setScale(int newScale, InitParams opts) {
-    java.math.BigDecimal result = (opts != null && opts.has("roundingMode"))
-      ? super.setScale(newScale, opts.getInt("roundingMode"))
-      : super.setScale(newScale);
-    return new BigDecimal(result);
-  }
+  @Export("longValue")
+  public double longValue_wrap() { return doubleValue(); }
 
-  <%#= wrap :BigDecimal, :divide, :BigDecimal %>
-  <%#= wrap :BigDecimal, :divide, :BigDecimal, :int %>
-  public BigDecimal divide(BigDecimal x, InitParams opts) {
-    java.math.BigDecimal result;
+  @Export("longValueExact")
+  public int longValueExact_wrap() { return intValueExact(); }
 
-    if(opts == null)
-      result = super.divide(x);
-    else {
-      if(!opts.has("roundingMode"))
-        result = super.divide(x);
-      else if(opts.has("scale"))
-        result = super.divide(x, opts.getInt("scale"), opts.getInt("roundingMode"));
-      else
-        result = super.divide(x, opts.getInt("roundingMode"));
-    }
-
-    return new BigDecimal(result);
+  public static final BigDecimal valueOf_va(JsArgs args) {
+    java.math.BigDecimal bd;
+    <%= call_signatures 'args', 'bd = java.math.BigDecimal.valueOf', 'double', 'int', 'int int' %> <%# XXX long type is not allowed %>
+    return new BigDecimal(bd);
   }
 
   public static native void log(String x) /*-{

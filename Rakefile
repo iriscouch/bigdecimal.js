@@ -93,16 +93,40 @@ task :default => :bigdecimal
 # Helpers
 #
 
-def wrap(return_type, name, *param_types)
+def wrap(return_type, name, *signatures)
+  # When there is no ambiguity (i.e. only one method signature) just wrap it directly.
+  return wrap_nosigs(return_type, name, *signatures) if signatures.length <= 1
+
+  # Use the call_signatures system to call the correct Java method and return it back to JS.
+  lines = []
+  lines << "public #{return_type} #{name}_va(JsArgs args) {"
+  lines << "#{return_type} result;"
+
+  lines << "// return_type.to_s[0..2] = #{return_type.to_s[0..2]}"
+  if return_type.to_s[0..2] != 'Big'
+    call = "result = super"
+  else
+    lines << "java.math.#{return_type} interim;"
+    call = "interim = super.#{name}"
+  end
+  lines << call_signatures('args', call, *signatures)
+  lines << "result = new #{return_type}(interim);" if return_type.to_s[0..2] == 'Big'
+  lines << "return result;"
+  lines << "}"
+  return lines.join("\n")
+end
+
+def wrap_nosigs(return_type, name, *param_types)
   formal = []; actual = []
   param_types.each_with_index do |param_type, a|
     formal.push "#{param_type} var#{a}"
-    actual.push "var#{a}"
+    actual.push %w[ MathContext RoundingMode ].include?(param_type.to_s) ? "new java.math.#{param_type}(var#{a}.toString())" : "var#{a}"
   end
 
   call = "super.#{name}(#{actual.join ', '})"
   expr = call
-  expr = "new #{return_type}(#{call})" if return_type.to_s[0..2] == 'Big'
+  #expr = "new #{return_type}(#{call})" if return_type.to_s[0..2] == 'Big'
+  expr = "new #{return_type}(#{call})" if %w[ BigInteger BigDecimal MathContext RoundingMode ].include?(return_type.to_s)
 
   "public #{return_type} #{name}(#{formal.join ', '}) { return #{expr}; }"
 end
