@@ -33,13 +33,16 @@ Here is a quick example in NodeJS:
     node> i = new bigdecimal.BigInteger("1234567890abcdefghijklmn", 24)
     node> puts("i is " + i)
     i is 60509751690538858612029415201127
+
     node> d = new bigdecimal.BigDecimal(i)
     node> x = new bigdecimal.BigDecimal("123456.123456789012345678901234567890")
     node> puts("d * x = " + d.multiply(x))
     d * x = 7470299375046812977089832214047022056.555930270554343863089286012030
+
     node> two = new bigdecimal.BigDecimal('2')
     node> puts("Average = " + d.add(x).divide(two))
     Average = 30254875845269429306014707662291.561728394506172839450617283945
+
     node> puts("d / x (25 decimal places) = " + d.divide(x, 25,
     ...   bigdecimal.RoundingMode.DOWN()))
     d / x (25 decimal places) = 490131635404200348624039911.8662623025579331926181155
