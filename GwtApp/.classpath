@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <classpath>
    <classpathentry kind="src" path="src"/>
-   <classpathentry kind="lib" path="/tmp/gwt-2.1.0.M1/gwt-user.jar"/>
-   <classpathentry kind="lib" path="/tmp/gwt-2.1.0.M1/gwt-dev.jar"/>
+   <classpathentry kind="lib" path="/tmp/gwt-2.1.0/gwt-user.jar"/>
+   <classpathentry kind="lib" path="/tmp/gwt-2.1.0/gwt-dev.jar"/>
    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
    <classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
    <classpathentry kind="output" path="war/WEB-INF/classes"/>
