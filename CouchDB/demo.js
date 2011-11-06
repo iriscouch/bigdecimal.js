@@ -19,9 +19,11 @@ ddoc.shows.ui = function(doc, req) {
 
   log(req.query);
 
+  var result;
+  var response = {'headers': {}};
+
   provides('html', function() {
-    var a, b, op, result;
-    var response = {headers: {'content-type': 'text/html'}};
+    response.headers['content-type'] = 'text/html;charset=utf-8';
 
     var match = req.query.e && req.query.e.match(/(-?\d+\.?\d*) *([\+\-\*\/]) *(-?\d+\.?\d*)/);
     if(!match)
@@ -31,21 +33,36 @@ ddoc.shows.ui = function(doc, req) {
                       "<br><br>" +
                       "(Also, division tends to throw exceptions because I hard-coded unlimited precision for this demo.)";
     else {
-      a = new bd.BigDecimal(match[1]);
-      b = new bd.BigDecimal(match[3]);
-      op = {'*': 'multiply', '/': 'divide', '+': 'add', '-': 'subtract'}[match[2]];
-      result = (op == 'divide') ? a[op].apply(a, [b, 300, bd.RoundingMode.HALF_UP()]) : a[op].apply(a, [b]);
-      response.body = a.toString() + ' ' + match[2] + ' ' + b.toString() + ' = ' + result.toString() +
-                      (op == 'divide' ? "<br>(Division precision set to 300)<br>" : "") +
-                      "<br><br><a href='https://github.com/iriscouch/bigdecimal.js'>bigdecimal.js - BigDecimal and BigInteger for Javascript</a>";
+      result = run({'a':match[1], 'b':match[3], 'op':match[2]});
+      response.body = req.query.e + '<br><br>';
+      response.body += '= ' + result;
+
+      if(match[2] == '/')
+        response.body += ' (Precision set to 300)';
+
+      response.body += "<br><br><a href='https://github.com/iriscouch/bigdecimal.js'>bigdecimal.js - BigDecimal and BigInteger for Javascript</a>";
     }
 
     response.body += '\n';
     return response;
   })
+
+  function run(opts) {
+    var result;
+    var ops = {'*': 'multiply', '/': 'divide', '+': 'add', '-': 'subtract'};
+
+    var a = new bd.BigDecimal("" + opts.a);
+    var b = new bd.BigDecimal("" + opts.b);
+    var op = ops[ opts.op ];
+
+    if(op == 'divide')
+      return a.divide(b, 300, bd.RoundingMode.HALF_UP());
+    else
+      return a[op].call(a, b);
+  }
 };
 
 ddoc.bigdecimal = fs.readFileSync(path.join(__dirname, '..', 'lib', 'bigdecimal.js'), 'utf8');
 
 if(require.main === module)
-  console.dir(ddoc);
+  console.log('ok');
