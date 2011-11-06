@@ -32,13 +32,21 @@ ddoc.shows.ui = function(doc, req) {
                       "(Also, division tends to throw exceptions because I hard-coded unlimited precision for this demo.)";
     else {
       result = run({'a':match[1], 'b':match[3], 'op':match[2]});
-      response.body = req.query.e + '<br><br>';
-      response.body += '= ' + result;
 
-      if(match[2] == '/')
-        response.body += ' (Precision set to 300)';
+      response.body = [ '<html>'
+                      , '<head><title>BigDecimal for CouchDB</title></head>'
+                      , '<body>'
+                      , req.query.e
+                      , '<br><br>'
+                      , '= ' + result
+                      , (match[2] == '/') ? ' (precision set to 300)' : ''
+                      , '<br><br>'
+                      , '<a href="https://github.com/iriscouch/bigdecimal.js">bigdecimal.js - BigDecimal and BigInteger for Javascript</a>'
+                      , '</body>'
+                      , '<script src="../bigdecimal.js"></script>'
+                      , '</html>'
+                      ].join('');
 
-      response.body += "<br><br><a href='https://github.com/iriscouch/bigdecimal.js'>bigdecimal.js - BigDecimal and BigInteger for Javascript</a>";
     }
 
     response.body += '\n';
@@ -61,6 +69,8 @@ ddoc.shows.ui = function(doc, req) {
 };
 
 ddoc.bigdecimal = fs.readFileSync(path.join(__dirname, '..', 'lib', 'bigdecimal.js'), 'utf8');
+
+couchapp.loadAttachments(ddoc, path.join(__dirname, '..', 'lib'));
 
 if(require.main === module)
   console.log('ok');
