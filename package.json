@@ -1,5 +1,5 @@
 { "name": "bigdecimal"
-, "version": "0.6.0"
+, "version": "0.6.1"
 
 , "author": { "name":"Jason Smith" , "email":"jhs@iriscouch.com", "url":"http://www.iriscouch.com/" }
 , "description": "BigInteger and BigDecimal types: arbitrary precision real numbers via Apache Harmony"
