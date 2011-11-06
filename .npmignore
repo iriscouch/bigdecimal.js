@@ -2,7 +2,7 @@
 ./.npminclude
 ./.gitignore
 ./.*.swp
-./apache-ant-*
+./apache-ant-*/
 ./gwt-2.*/
 ./BigDecimalApp/
 ./Rakefile
