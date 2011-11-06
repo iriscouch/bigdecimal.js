@@ -1,0 +1,8 @@
+.*.swp
+.git*
+apache-ant-*
+gwt-2.*
+GwtApp
+Rakefile
+TODO
+npm-debug.log

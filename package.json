@@ -1,0 +1,21 @@
+{ "name": "bigdecimal"
+, "version": "0.6.0"
+
+, "author": { "name":"Jason Smith" , "email":"jhs@iriscouch.com", "url":"http://www.iriscouch.com/" }
+, "description": "BigInteger and BigDecimal types: arbitrary precision real numbers via Apache Harmony"
+, "tags": ["big", "bignum", "bigint", "integer", "arithmetic", "precision", "bigintegers", "decimal", "float"]
+
+, "homepage": "https://github.com/iriscouch/bigdecimal.js"
+, "repository": { "type": "git"
+                , "url": "git://github.com/iriscouch/bigdecimal.js.git" }
+
+, "engines": [ "node" ]
+, "dependencies": {
+                  }
+
+, "devDependencies": { "tap": "0.0.10"
+                     }
+
+, "main": "bigdecimal"
+, "bin": {"bigdecimal.js": "./repl.js"}
+}
