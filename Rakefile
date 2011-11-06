@@ -118,7 +118,7 @@ task :default => :bigdecimal
 
 desc 'Clean up'
 task :clean do
-  sh "rm -rfv #{CJS_BUILD} #{GWT_SRC}/Big*.java"
+  sh "rm -rfv #{CJS_BUILD} #{GWT_SRC}/Big*.java #{GWT_SRC}/MathContext.java #{GWT_SRC}/RoundingMode.java"
 end
 
 desc 'Show how to tag a revision'
