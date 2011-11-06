@@ -15,49 +15,39 @@ Then you need BigDecimal for Javascript. BigDecimal is great for arithmetic of *
 
 ## Usage
 
+BigDecimal works in the browser and in Apache CouchDB. See the simple [BigDecimal Couch app demo][demo] to compare server-side and client-side expression evaluation.
+
 BigDecimal is available in the NPM repository for [NodeJS][node].
 
     npm install bigdecimal
 
-Now use it normally.
+Now use it normally. It is exactly like the Java 1.5 `BigInteger` and `BigDecimal` API. See the [BigDecimal documentation][java_bd] for information.
 
 ```javascript
 var bigdecimal = require("bigdecimal");
 
 var i = new bigdecimal.BigInteger("1234567890abcdefghijklmn", 24);
 console.log("i is " + i);
+// Output: i is 60509751690538858612029415201127
+
+var d = new bigdecimal.BigDecimal(i);
+var x = new bigdecimal.BigDecimal("123456.123456789012345678901234567890");
+console.log("d * x = " + d.multiply(x));
+// Output: d * x = 7470299375046812977089832214047022056.555930270554343863089286012030
+
+var two = new bigdecimal.BigDecimal('2');
+console.log("Average = " + d.add(x).divide(two));
+// Output: Average = 30254875845269429306014707662291.561728394506172839450617283945
+
+var down = bigdecimal.RoundingMode.DOWN();
+console.log("d / x (25 decimal places) = " + d.divide(x, 25, DOWN));
+// Output: d / x (25 decimal places) = 490131635404200348624039911.8662623025579331926181155
 ```
 
 There is also a command-line REPL tool for experimentation, `bigdecimal.js` if you install with the `-g` switch, or `./node_modules/.bin/bigdecimal.js` otherwise. The `bigdecimal` module is already loaded, also available as `BD` for convenience.
 
     bigdecimal.js
     BigDec> d = new BD.BigDecimal("123456.123456789012345678901234567890")
-
-BigDecimal also works in the browser and in [CouchDB][couchdb]. See the **Builds** seciton below for more usage options
-
-Here is a quick example in NodeJS:
-
-    node> bigdecimal = require("bigdecimal");
-    node> i = new bigdecimal.BigInteger("1234567890abcdefghijklmn", 24)
-    node> console.log("i is " + i)
-    i is 60509751690538858612029415201127
-
-    node> d = new bigdecimal.BigDecimal(i)
-    node> x = new bigdecimal.BigDecimal("123456.123456789012345678901234567890")
-    node> console.log("d * x = " + d.multiply(x))
-    d * x = 7470299375046812977089832214047022056.555930270554343863089286012030
-
-    node> two = new bigdecimal.BigDecimal('2')
-    node> console.log("Average = " + d.add(x).divide(two))
-    Average = 30254875845269429306014707662291.561728394506172839450617283945
-
-    node> console.log("d / x (25 decimal places) = " + d.divide(x, 25,
-    ...   bigdecimal.RoundingMode.DOWN()))
-    d / x (25 decimal places) = 490131635404200348624039911.8662623025579331926181155
-
-This is exactly like the Java 1.5 `BigInteger` and `BigDecimal` API. See the [BigDecimal documentation][java_bd] for more information.
-
-If you need an additional format (e.g. browser or NPM), let me know and hopefully we can add it to the release.
 
 ## Implementation
 
@@ -90,6 +80,7 @@ BigDecimal for Javascript is licensed under the Apache License, version 2.0.
 [gwt]: http://code.google.com/webtoolkit/
 [sdk]: http://code.google.com/webtoolkit/download.html
 [ant]: http://ant.apache.org/index.html
+[demo]: http://jhs.iriscouch.com/demo/_design/bigdecimal/_show/ui?e=321.4567890*123456789.123456789987654321
 [commonjs]: http://commonjs.org/
 [gwt-java-math]: http://code.google.com/p/gwt-java-math/
 [couchdb]: http://couchdb.apache.org/
