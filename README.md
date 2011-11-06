@@ -92,7 +92,10 @@ will be in `lib/bigdecimal.js`.
 To build BigDecimal yourself from source, follow these steps:
 
 1. Download the [GWT SDK][sdk], version 2.4.0. Extract it in this checkout, as `gwt-2.4.0/`
-1. *Note* Possibly edit `BigDecimalApp/.classpath` and fix the paths.  Suggestions welcome.
+1. `rake clean`
+1. `rake`
+
+As with the prebuilt download, the CommonJS module will be in `lib/bigdecimal.js`.
 
 ## License
 
