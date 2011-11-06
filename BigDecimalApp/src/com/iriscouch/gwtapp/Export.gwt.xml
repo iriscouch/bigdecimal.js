@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to='gwtapp'>
-  <inherits name='io.couch.gwtapp.BigDecimal'/>
+  <inherits name='com.iriscouch.gwtapp.BigDecimal'/>
 
   <inherits name='org.timepedia.exporter.Exporter'/>
   <set-property name='export' value='yes'/>

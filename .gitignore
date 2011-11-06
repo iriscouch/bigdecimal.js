@@ -3,3 +3,8 @@ apache-ant-*
 gwt-2.*
 build/bigdecimal.js
 npm-debug.log
+BigDecimalApp/gwt-unitCache
+BigDecimalApp/war/WEB-INF/classes
+BigDecimalApp/war/WEB-INF/deploy
+BigDecimalApp/war/WEB-INF/lib
+BigDecimalApp/war/gwtapp

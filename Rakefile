@@ -1,11 +1,11 @@
 require 'erb'
 
 HERE = File.expand_path(File.dirname __FILE__)
-GWT  = "#{HERE}/GwtApp"
-GWT_SRC = "#{GWT}/src/io/couch/gwtapp/client"
+GWT  = "#{HERE}/BigDecimalApp"
+GWT_SRC = "#{GWT}/src/com/iriscouch/gwtapp/client"
 CJS_PATH = "#{HERE}/build/bigdecimal.js"
 
-java_sources = %w[ RoundingMode MathContext BigInteger BigDecimal ]
+java_sources = %w[ RoundingMode MathContext BigInteger BigDecimal BigDecimalApp ]
 java_sources.each do |class_name|
   file "#{GWT_SRC}/#{class_name}.java" => "#{GWT_SRC}/#{class_name}.java.erb" do |task|
     erb_path = task.prerequisites.first

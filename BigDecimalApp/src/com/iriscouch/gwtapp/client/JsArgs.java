@@ -1,4 +1,4 @@
-package io.couch.gwtapp.client;
+package com.iriscouch.gwtapp.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
