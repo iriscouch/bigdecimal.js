@@ -13,7 +13,7 @@
 , "dependencies": {
                   }
 
-, "devDependencies": {
+, "devDependencies": { "couchapp": "0.8.1"
                      }
 
 , "main": "lib/bigdecimal.js"
