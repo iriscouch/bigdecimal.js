@@ -25,7 +25,7 @@ Now use it normally.
 var bigdecimal = require("bigdecimal");
 
 var i = new bigdecimal.BigInteger("1234567890abcdefghijklmn", 24);
-console.log("I is " + i);
+console.log("i is " + i);
 ```
 
 There is also a command-line REPL tool for experimentation, `bigdecimal.js` if you install with the `-g` switch, or `./node_modules/.bin/bigdecimal.js` otherwise. The `bigdecimal` module is already loaded, also available as `BD` for convenience.
