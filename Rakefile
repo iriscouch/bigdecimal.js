@@ -10,7 +10,10 @@ task :default => :bigdecimal
 
 java_sources = %w[ RoundingMode MathContext BigInteger BigDecimal BigDecimalApp ]
 java_sources.each do |class_name|
-  file "#{GWT_SRC}/#{class_name}.java" => "#{GWT_SRC}/#{class_name}.java.erb" do |task|
+  java_source_path = "#{GWT_SRC}/#{class_name}.java"
+
+  file CJS_PATH => java_source_path
+  file java_source_path => "#{java_source_path}.erb" do |task|
     erb_path = task.prerequisites.first
     java_path = task.name
 
@@ -25,7 +28,7 @@ end
 
 directory CJS_BUILD
 
-file CJS_PATH => [CJS_BUILD, "commonjs_wrapper.js.erb"] + java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
+file CJS_PATH => [CJS_BUILD, "commonjs_wrapper.js.erb"] do |task|
   # Build the base GWT library.
   Dir.chdir GWT do
     sh 'ant build' unless ENV['skip_ant']
