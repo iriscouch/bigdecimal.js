@@ -46,6 +46,11 @@ file CJS_PATH => ["#{HERE}/build"] + java_sources.map{|x| "#{GWT_SRC}/#{x}.java"
     if(!window.document)
       window.document = document;
 
+    if(typeof navigator === 'undefined')
+      var navigator = {};
+    if(!navigator.userAgent)
+      navigator.userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/534.51.22 (KHTML, like Gecko) Version/5.1.1 Safari/534.51.22';
+
     function gwtapp() {};
 
     <%= gwt_source %>
