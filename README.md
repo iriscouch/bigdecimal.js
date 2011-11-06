@@ -87,7 +87,7 @@ maintained for several years and I will glady include it in this project.
 
 Ready-to-use Javascript builds are available in the tagged Git revisions. Click
 the `Download Source` button at the top and choose a `vX.Y` tag. The built code
-will be in `build/bigdecimal.js`.
+will be in `lib/bigdecimal.js`.
 
 To build BigDecimal yourself from source, follow these steps:
 

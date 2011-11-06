@@ -16,7 +16,7 @@
 
 var util = require('util')
   , repl = require('repl')
-  , bigdecimal = require('./build/bigdecimal')
+  , bigdecimal = require('./lib/bigdecimal')
   ;
 
 var session = repl.start('BigDec> ');

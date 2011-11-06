@@ -1,7 +1,7 @@
 .*.swp
 apache-ant-*
 gwt-2.*
-build/bigdecimal.js
+/lib/bigdecimal.js
 npm-debug.log
 BigDecimalApp/gwt-unitCache
 BigDecimalApp/war/WEB-INF/classes

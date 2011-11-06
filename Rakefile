@@ -3,7 +3,7 @@ require 'erb'
 HERE = File.expand_path(File.dirname __FILE__)
 GWT  = "#{HERE}/BigDecimalApp"
 GWT_SRC = "#{GWT}/src/com/iriscouch/gwtapp/client"
-CJS_BUILD = "#{HERE}/build"
+CJS_BUILD = "#{HERE}/lib"
 CJS_PATH = "#{CJS_BUILD}/bigdecimal.js"
 
 java_sources = %w[ RoundingMode MathContext BigInteger BigDecimal BigDecimalApp ]
