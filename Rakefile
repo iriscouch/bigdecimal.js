@@ -101,7 +101,9 @@ and commits the tag.
  5. git tag -a -m "Tag release" "$ver"
  6. git push origin "$ver:/refs/tags/$ver"
  7. npm publish
- 8. git reset --hard "$ver"^
+ 8. Edit package.json and bump the version
+ 9. git rm #{CJS_PATH}
+ 10. git commit -m 'Working on <new version>'
 EOT
 end
 
