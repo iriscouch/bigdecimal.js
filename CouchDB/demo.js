@@ -31,19 +31,34 @@ ddoc.shows.ui = function(doc, req) {
                       "<br><br>" +
                       "(Also, division tends to throw exceptions because I hard-coded unlimited precision for this demo.)";
     else {
-      result = run({'a':match[1], 'b':match[3], 'op':match[2]});
+      var query = {'a':match[1], 'b':match[3], 'op':match[2]};
+      result = run(query);
+
+      var browser_result = [ '<script src="../bigdecimal.js"></script>'
+                           , '<script>'
+                           , 'if(document.addEventListener)'
+                           , '  document.addEventListener("DOMContentLoaded", function() {'
+                           , '    var bd = {"BigDecimal":BigDecimal, "BigInteger":BigInteger, "RoundingMode":RoundingMode};'
+                           ,      run.toString()
+                           , '    var result = run(' + JSON.stringify(query) + ');'
+                           , '    document.getElementById("browser_result").innerHTML = result;'
+                           , '  })'
+                           , '</script>'
+                           ].join('\n');
 
       response.body = [ '<html>'
                       , '<head><title>BigDecimal for CouchDB</title></head>'
                       , '<body>'
                       , req.query.e
-                      , '<br><br>'
-                      , '= ' + result
-                      , (match[2] == '/') ? ' (precision set to 300)' : ''
+                      , '<br>'
+                      , (match[2] == '/') ? '(Precision set to 300)<br>' : '<br>'
+                      , 'My CouchDB says: ' + result
+                      , '<br>'
+                      , 'Your browser says: <span id="browser_result">...</span>'
                       , '<br><br>'
                       , '<a href="https://github.com/iriscouch/bigdecimal.js">bigdecimal.js - BigDecimal and BigInteger for Javascript</a>'
+                      , browser_result
                       , '</body>'
-                      , '<script src="../bigdecimal.js"></script>'
                       , '</html>'
                       ].join('');
 
