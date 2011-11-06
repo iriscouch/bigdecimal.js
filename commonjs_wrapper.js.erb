@@ -1,4 +1,5 @@
 <%# A CommonJS module as an ERB template, wrapping the GWT compiled output %>
+(function(exports) {
 
 if(typeof document === 'undefined')
   var document = {};
@@ -66,3 +67,5 @@ function fix_and_export(class_name) {
 
   exports[class_name] = Fixed;
 }
+
+})(typeof exports !== 'undefined' ? exports : (typeof window !== 'undefined' ? window : {}));
