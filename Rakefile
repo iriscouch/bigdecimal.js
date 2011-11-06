@@ -53,6 +53,23 @@ end
 desc 'Build CommonJS BigDecimal library'
 task :bigdecimal => CJS_PATH
 
+desc 'Push a demo BigDecimal Couch app'
+task :couchapp => [CJS_PATH, "#{HERE}/CouchDB/demo.js"] do
+  couchapp = "#{HERE}/node_modules/.bin/couchapp"
+  raise "Can't find command #{couchapp}, did you 'npm install --dev'?" unless File.exist?(couchapp)
+
+  raise "Please specify a url parameter, e.g. url=http://admin:secret@example.iriscouch.com/demo" unless ENV['url']
+
+  sh couchapp, "push", "#{HERE}/CouchDB/demo.js", ENV['url']
+
+  url = ENV['url']
+  url = url.sub /\/+$/, ""
+  url = url.sub /^(https?):\/\/.*?:.*?@(.*)$/, "\\1://\\2"
+
+  puts ""
+  puts "Demo URL: #{url}/_design/bigdecimal/_show/ui"
+end
+
 desc 'Clean up'
 task :clean do
   sh "rm -rfv #{CJS_BUILD} #{GWT_SRC}/Big*.java #{GWT_SRC}/MathContext.java #{GWT_SRC}/RoundingMode.java"
