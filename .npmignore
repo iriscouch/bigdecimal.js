@@ -8,3 +8,5 @@
 ./Rakefile
 ./TODO
 ./npm-debug.log
+./CouchDB/
+./commonjs_wrapper.js.erb

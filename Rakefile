@@ -23,7 +23,7 @@ end
 
 directory CJS_BUILD
 
-file CJS_PATH => [CJS_BUILD] + java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
+file CJS_PATH => [CJS_BUILD, "commonjs_wrapper.js.erb"] + java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |task|
   # Build the base GWT library.
   Dir.chdir GWT do
     sh 'ant build' unless ENV['skip_ant']
@@ -38,74 +38,8 @@ file CJS_PATH => [CJS_BUILD] + java_sources.map{|x| "#{GWT_SRC}/#{x}.java"} do |
   loader = "gwtOnLoad(null, 'ModuleName', 'moduleBase');"
   gwt_source.gsub! /(\}\)\(\);)$/, "\n#{loader}\n\\1"
 
-  js = ERB.new <<-EOT
-    if(typeof document === 'undefined')
-      var document = {};
-
-    if(typeof window === 'undefined')
-      var window = {};
-    if(!window.document)
-      window.document = document;
-
-    if(typeof navigator === 'undefined')
-      var navigator = {};
-    if(!navigator.userAgent)
-      navigator.userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/534.51.22 (KHTML, like Gecko) Version/5.1.1 Safari/534.51.22';
-
-    function gwtapp() {};
-
-    <%= gwt_source %>
-
-    exports.RoundingMode = window.bigdecimal.RoundingMode;
-    exports.MathContext = window.bigdecimal.MathContext;
-
-    // This is an unfortunate kludge because Java methods and constructors cannot accept vararg parameters.
-    var fix_and_export = function(class_name) {
-      var Src = window.bigdecimal[class_name];
-      var Fixed = Src;
-      if(Src.__init__) {
-        Fixed = function wrap_constructor() {
-          var args = Array.prototype.slice.call(arguments);
-          return Src.__init__(args);
-        };
-
-        Fixed.prototype = Src.prototype;
-
-        for (var a in Src)
-          if(Src.hasOwnProperty(a)) {
-            if((typeof Src[a] != 'function') || !a.match(/_va$/))
-              Fixed[a] = Src[a];
-            else {
-              var pub_name = a.replace(/_va$/, '');
-              Fixed[pub_name] = function wrap_classmeth () {
-                var args = Array.prototype.slice.call(arguments);
-                return wrap_classmeth.inner_method(args);
-              };
-              Fixed[pub_name].inner_method = Src[a];
-            }
-          }
-
-      }
-
-      var proto = Fixed.prototype;
-      for (var a in proto) {
-        if(proto.hasOwnProperty(a) && (typeof proto[a] == 'function') && a.match(/_va$/)) {
-          var pub_name = a.replace(/_va$/, '');
-          proto[pub_name] = function wrap_meth() {
-            var args = Array.prototype.slice.call(arguments);
-            return wrap_meth.inner_method.apply(this, [args]);
-          };
-          proto[pub_name].inner_method = proto[a];
-          delete proto[a];
-        }
-      }
-
-      exports[class_name] = Fixed;
-    };
-
-    fix_and_export('BigDecimal');
-    fix_and_export('BigInteger');
-  EOT
+  wrapper_src = File.new("commonjs_wrapper.js.erb").read
+  js = ERB.new wrapper_src
 
   File.new(task.name, 'w').write(js.result binding)
   puts "Generated #{File.basename task.name}"
