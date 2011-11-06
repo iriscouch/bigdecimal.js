@@ -10,3 +10,4 @@
 ./npm-debug.log
 ./CouchDB/
 ./commonjs_wrapper.js.erb
+./build/

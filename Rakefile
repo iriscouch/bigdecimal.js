@@ -4,15 +4,18 @@ HERE = File.expand_path(File.dirname __FILE__)
 GWT  = "#{HERE}/BigDecimalApp"
 GWT_SRC = "#{GWT}/src/com/iriscouch/gwtapp/client"
 CJS_DIR = "#{HERE}/lib"
+JS_BUILD = "#{HERE}/build/out.js"
 CJS_PATH = "#{CJS_DIR}/bigdecimal.js"
 
 task :default => :bigdecimal
+
+directory CJS_DIR
 
 java_sources = %w[ RoundingMode MathContext BigInteger BigDecimal BigDecimalApp ]
 java_sources.each do |class_name|
   java_source_path = "#{GWT_SRC}/#{class_name}.java"
 
-  file CJS_PATH => java_source_path
+  file JS_BUILD => java_source_path
   file java_source_path => "#{java_source_path}.erb" do |task|
     erb_path = task.prerequisites.first
     java_path = task.name
@@ -26,9 +29,7 @@ java_sources.each do |class_name|
   end
 end
 
-directory CJS_DIR
-
-file CJS_PATH => [CJS_DIR, "commonjs_wrapper.js.erb"] do |task|
+file JS_BUILD => CJS_DIR do |task|
   # Build the base GWT library.
   Dir.chdir GWT do
     sh 'ant build' unless ENV['skip_ant']
@@ -42,6 +43,13 @@ file CJS_PATH => [CJS_DIR, "commonjs_wrapper.js.erb"] do |task|
   # a function closure. Better ideas welcome!
   loader = "gwtOnLoad(null, 'ModuleName', 'moduleBase');"
   gwt_source.gsub! /(\}\)\(\);)$/, "\n#{loader}\n\\1"
+
+  File.new(task.name, 'w').write(gwt_source)
+  puts "#{gwt_js} => #{task.name}"
+end
+
+file CJS_PATH => [JS_BUILD, "commonjs_wrapper.js.erb"] do |task|
+  gwt_source = File.new(JS_BUILD).read
 
   wrapper_src = File.new("commonjs_wrapper.js.erb").read
   js = ERB.new wrapper_src
@@ -72,7 +80,7 @@ end
 
 desc 'Clean up'
 task :clean do
-  sh "rm -rfv #{CJS_DIR} #{GWT_SRC}/Big*.java #{GWT_SRC}/MathContext.java #{GWT_SRC}/RoundingMode.java"
+  sh "rm -rfv #{CJS_DIR} #{JS_BUILD} #{GWT_SRC}/Big*.java #{GWT_SRC}/MathContext.java #{GWT_SRC}/RoundingMode.java"
 end
 
 desc 'Show how to tag a revision'
