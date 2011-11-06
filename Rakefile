@@ -138,7 +138,8 @@ and commits the tag.
  4. ver="vX.Y.Z" # Set this to something.
  5. git tag -a -m "Tag release" "$ver"
  6. git push origin "$ver:/refs/tags/$ver"
- 7. git reset --hard "$ver"^
+ 7. npm publish
+ 8. git reset --hard "$ver"^
 EOT
 end
 
