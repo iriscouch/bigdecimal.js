@@ -6,6 +6,8 @@ GWT_SRC = "#{GWT}/src/com/iriscouch/gwtapp/client"
 CJS_BUILD = "#{HERE}/lib"
 CJS_PATH = "#{CJS_BUILD}/bigdecimal.js"
 
+task :default => :bigdecimal
+
 java_sources = %w[ RoundingMode MathContext BigInteger BigDecimal BigDecimalApp ]
 java_sources.each do |class_name|
   file "#{GWT_SRC}/#{class_name}.java" => "#{GWT_SRC}/#{class_name}.java.erb" do |task|
@@ -47,8 +49,6 @@ end
 
 desc 'Build CommonJS BigDecimal library'
 task :bigdecimal => CJS_PATH
-
-task :default => :bigdecimal
 
 desc 'Clean up'
 task :clean do
