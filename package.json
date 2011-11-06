@@ -2,7 +2,7 @@
 , "version": "0.6.1"
 
 , "author": { "name":"Jason Smith" , "email":"jhs@iriscouch.com", "url":"http://www.iriscouch.com/" }
-, "description": "BigInteger and BigDecimal types: arbitrary precision real numbers via Apache Harmony"
+, "description": "Arbitrary-precision BigInteger and BigDecimal real numbers: Apache Harmony's implementation"
 , "tags": ["big", "bignum", "bigint", "integer", "arithmetic", "precision", "bigintegers", "decimal", "float"]
 
 , "homepage": "https://github.com/iriscouch/bigdecimal.js"
