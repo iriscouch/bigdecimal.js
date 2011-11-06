@@ -20,12 +20,25 @@ it&rsquo;s time we got our act together.
 
 ## Usage
 
-This software is a [CommonJS][commonjs] module. It is immediately useful in
-[NodeJS][node] and [CouchDB][couchdb] projects.
+BigDecimal is available in the NPM repository for [NodeJS][node].
 
-Ready-to-use Javascript builds are available in the tagged Git revisions. Click
-the `Download Source` button at the top and choose a `vX.Y` tag. The built code
-will be in `build/bigdecimal.js`.
+    npm install bigdecimal
+
+Now use it normally.
+
+```javascript
+var bigdecimal = require("bigdecimal");
+
+var i = new bigdecimal.BigInteger("1234567890abcdefghijklmn", 24);
+console.log("I is " + i);
+```
+
+There is also a command-line REPL tool for experimentation, `bigdecimal.js` if you install with the `-g` switch, or `./node_modules/.bin/bigdecimal.js` otherwise. The `bigdecimal` module is already loaded, also available as `BD` for convenience.
+
+    bigdecimal.js
+    BigDec> d = new BD.BigDecimal("123456.123456789012345678901234567890")
+
+BigDecimal also works in the browser and in [CouchDB][couchdb]. See the **Builds** seciton below for more usage options
 
 Here is a quick example in NodeJS:
 
@@ -47,8 +60,7 @@ Here is a quick example in NodeJS:
     ...   bigdecimal.RoundingMode.DOWN()))
     d / x (25 decimal places) = 490131635404200348624039911.8662623025579331926181155
 
-This is exactly like the Java 1.5 `BigInteger` and `BigDecimal` API. See the
-[BigDecimal documentation][java_bd] for more information.
+This is exactly like the Java 1.5 `BigInteger` and `BigDecimal` API. See the [BigDecimal documentation][java_bd] for more information.
 
 If you need an additional format (e.g. browser or NPM), let me know and
 hopefully we can add it to the release.
@@ -71,15 +83,24 @@ implement `BigInteger` and `BigDecimal` in native Javascript; convince the world
 your implementation is trustworthy, reasonably bug-free, and sure to be
 maintained for several years and I will glady include it in this project.
 
-  [gwt]: http://code.google.com/webtoolkit/
-  [commonjs]: http://commonjs.org/
-  [gwt-java-math]: http://code.google.com/p/gwt-java-math/
-  [couchdb]: http://couchdb.apache.org/
-  [node]: http://nodejs.org/
-  [java_bd]: http://java.sun.com/j2se/1.5.0/docs/api/java/math/BigDecimal.html
+## Builds
+
+Ready-to-use Javascript builds are available in the tagged Git revisions. Click
+the `Download Source` button at the top and choose a `vX.Y` tag. The built code
+will be in `build/bigdecimal.js`.
+
+To build BigDecimal yourself from source, follow these steps:
+
+1. Download the [GWT SDK][sdk], version 2.4.0. Extract it in this checkout, as `gwt-2.4.0/`
 
 ## License
 
 BigDecimal for Javascript is licensed under the Apache License, version 2.0.
 
-vim: tw=80
+[gwt]: http://code.google.com/webtoolkit/
+[sdk]: http://code.google.com/webtoolkit/download.html
+[commonjs]: http://commonjs.org/
+[gwt-java-math]: http://code.google.com/p/gwt-java-math/
+[couchdb]: http://couchdb.apache.org/
+[node]: http://nodejs.org/
+[java_bd]: http://java.sun.com/j2se/1.5.0/docs/api/java/math/BigDecimal.html
