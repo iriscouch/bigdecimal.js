@@ -39,17 +39,17 @@ file JS_BUILD => CJS_DIR do |task|
   puts "Using compiled JS: #{gwt_js}"
   gwt_source = File.new(gwt_js).read
 
-  # Insert the code required to initialize the library. This is text manipulation to reach inside
-  # a function closure. Better ideas welcome!
-  loader = "gwtOnLoad(null, 'ModuleName', 'moduleBase');"
-  gwt_source.gsub! /(\}\)\(\);)$/, "\n#{loader}\n\\1"
-
   File.new(task.name, 'w').write(gwt_source)
   puts "#{gwt_js} => #{task.name}"
 end
 
 file CJS_PATH => [JS_BUILD, "commonjs_wrapper.js.erb"] do |task|
   gwt_source = File.new(JS_BUILD).read
+
+  # Insert the code required to initialize the library. This is text manipulation to reach inside
+  # a function closure. It would be nice to switch to UglifyJS.
+  loader = "gwtOnLoad(null, 'ModuleName', 'moduleBase');"
+  gwt_source.gsub! /(\}\)\(\);)$/, "\n#{loader}\n\\1"
 
   wrapper_src = File.new("commonjs_wrapper.js.erb").read
   js = ERB.new wrapper_src
