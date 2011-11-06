@@ -1,8 +1,6 @@
 #  BigDecimal for Javascript
 
-*BigDecimal for Javascript* is a pure-Javascript implementation of immutable,
-arbitrary-precision, signed decimal numbers. BigDecimal supports **decimal**
-math with arbitrary precision.
+*BigDecimal for Javascript* is a pure-Javascript implementation of immutable, arbitrary-precision, signed decimal numbers. BigDecimal supports **decimal** math with arbitrary precision.
 
 For a limited time, we will throw in **BigInteger** support at no extra charge!
 
@@ -13,10 +11,7 @@ If this is a problem for you:
     node> 0.1 + 0.2
     0.30000000000000004
 
-Then you need BigDecimal for Javascript. BigDecimal is great for arithmetic of
-*financial* information, or anything exceeding the Javascript `Number` (IEEE-754
-float) type. Decimal did not make the cut in the new ECMAScript standards so
-it&rsquo;s time we got our act together.
+Then you need BigDecimal for Javascript. BigDecimal is great for arithmetic of *financial* information, or anything exceeding the Javascript `Number` (IEEE-754 float) type. Decimal did not make the cut in the new ECMAScript standards so it&rsquo;s time we got our act together.
 
 ## Usage
 
@@ -62,32 +57,22 @@ Here is a quick example in NodeJS:
 
 This is exactly like the Java 1.5 `BigInteger` and `BigDecimal` API. See the [BigDecimal documentation][java_bd] for more information.
 
-If you need an additional format (e.g. browser or NPM), let me know and
-hopefully we can add it to the release.
+If you need an additional format (e.g. browser or NPM), let me know and hopefully we can add it to the release.
 
 ## Implementation
 
-This code is compiled Javascript, originating from the Google [GWT][gwt]
-project. GWT version 2.1 supports the Java BigDecimal class. The implementation
-came from the Apache Harmony project by way of [gwt-java-math][gwt-java-math]
-which optimized it for the Javascript compiler.
+This code is compiled Javascript, originating from the Google [GWT][gwt] project. GWT version 2.1 supports the Java BigDecimal class. The implementation came from the Apache Harmony project by way of [gwt-java-math][gwt-java-math] which optimized it for the Javascript compiler.
 
 Compiled Javascript is a problem; however that is offset by these benefits:
 
 * The implementation is mature, optimized, and maintained by Apache and Google
-* The API is well-known, compatible with the J2SE `BigDecimal` and `BigInteger`
-  class
+* The API is well-known, compatible with the J2SE `BigDecimal` and `BigInteger` class
 
-If you can&rsquo;t stand the idea of running machine-generated code, please
-implement `BigInteger` and `BigDecimal` in native Javascript; convince the world
-your implementation is trustworthy, reasonably bug-free, and sure to be
-maintained for several years and I will glady include it in this project.
+If you can&rsquo;t stand the idea of running machine-generated code, please implement `BigInteger` and `BigDecimal` in native Javascript; convince the world your implementation is trustworthy, reasonably bug-free, and sure to be maintained for several years and I will glady include it in this project.
 
 ## Builds
 
-Ready-to-use Javascript builds are available in the tagged Git revisions. Click
-the `Download Source` button at the top and choose a `vX.Y` tag. The built code
-will be in `lib/bigdecimal.js`.
+Ready-to-use Javascript builds are available in the tagged Git revisions. Click the `Download Source` button at the top and choose a `vX.Y` tag. The built code will be in `lib/bigdecimal.js`.
 
 To build BigDecimal yourself from source, follow these steps:
 
