@@ -1,4 +1,5 @@
 .*.swp
 apache-ant-*
-gwt-2.1.0*
+gwt-2.*
 build/bigdecimal.js
+npm-debug.log
