@@ -23,8 +23,6 @@ ddoc.shows.ui = function(doc, req) {
   var response = {'headers': {}};
 
   provides('html', function() {
-    response.headers['content-type'] = 'text/html;charset=utf-8';
-
     var match = req.query.e && req.query.e.match(/(-?\d+\.?\d*) *([\+\-\*\/]) *(-?\d+\.?\d*)/);
     if(!match)
       response.body = "Usage: ('e' parameter) must be: A &lt;operand&gt; B" +
