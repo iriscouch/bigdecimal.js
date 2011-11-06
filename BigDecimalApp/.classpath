@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<classpath>
+   <classpathentry kind="src" path="src"/>
+   <classpathentry kind="lib" path="/Users/jhs/src/iris/bigdecimal.js/gwt-2.4.0/gwt-user.jar"/>
+   <classpathentry kind="lib" path="/Users/jhs/src/iris/bigdecimal.js/gwt-2.4.0/gwt-dev.jar"/>
+   <classpathentry kind="lib" path="/Users/jhs/src/iris/bigdecimal.js/gwt-2.4.0/validation-api-1.0.0.GA.jar"/>
+   <classpathentry kind="lib" path="/Users/jhs/src/iris/bigdecimal.js/gwt-2.4.0/validation-api-1.0.0.GA-sources.jar"/>
+   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+   <classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+   <classpathentry kind="output" path="war/WEB-INF/classes"/>
+
+</classpath>
