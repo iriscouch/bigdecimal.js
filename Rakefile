@@ -38,8 +38,14 @@ file CJS_PATH => ["#{HERE}/build"] + java_sources.map{|x| "#{GWT_SRC}/#{x}.java"
   gwt_source.gsub! /(\}\)\(\);)$/, "\n#{loader}\n\\1"
 
   js = ERB.new <<-EOT
-    document = {};
-    window = { "document": document };
+    if(typeof document === 'undefined')
+      var document = {};
+
+    if(typeof window === 'undefined')
+      var window = {};
+    if(!window.document)
+      window.document = document;
+
     function gwtapp() {};
 
     <%= gwt_source %>
