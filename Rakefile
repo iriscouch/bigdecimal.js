@@ -3,8 +3,8 @@ require 'erb'
 HERE = File.expand_path(File.dirname __FILE__)
 GWT  = "#{HERE}/BigDecimalApp"
 GWT_SRC = "#{GWT}/src/com/iriscouch/gwtapp/client"
-CJS_BUILD = "#{HERE}/lib"
-CJS_PATH = "#{CJS_BUILD}/bigdecimal.js"
+CJS_DIR = "#{HERE}/lib"
+CJS_PATH = "#{CJS_DIR}/bigdecimal.js"
 
 task :default => :bigdecimal
 
@@ -26,9 +26,9 @@ java_sources.each do |class_name|
   end
 end
 
-directory CJS_BUILD
+directory CJS_DIR
 
-file CJS_PATH => [CJS_BUILD, "commonjs_wrapper.js.erb"] do |task|
+file CJS_PATH => [CJS_DIR, "commonjs_wrapper.js.erb"] do |task|
   # Build the base GWT library.
   Dir.chdir GWT do
     sh 'ant build' unless ENV['skip_ant']
@@ -72,7 +72,7 @@ end
 
 desc 'Clean up'
 task :clean do
-  sh "rm -rfv #{CJS_BUILD} #{GWT_SRC}/Big*.java #{GWT_SRC}/MathContext.java #{GWT_SRC}/RoundingMode.java"
+  sh "rm -rfv #{CJS_DIR} #{GWT_SRC}/Big*.java #{GWT_SRC}/MathContext.java #{GWT_SRC}/RoundingMode.java"
 end
 
 desc 'Show how to tag a revision'
