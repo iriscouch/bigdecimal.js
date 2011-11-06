@@ -77,6 +77,7 @@ Ready-to-use Javascript builds are available in the tagged Git revisions. Click 
 To build BigDecimal yourself from source, follow these steps:
 
 1. Download the [GWT SDK][sdk], version 2.4.0. Extract it in this checkout, as `gwt-2.4.0/`
+1. Get [Apache Ant][ant] if you don't have it (try just running `ant` at the command line). I just unpack it in this checkout and add `$PWD/apche-ant-1.8.2/bin` to my `PATH`.
 1. `rake clean`
 1. `rake`
 
@@ -88,6 +89,7 @@ BigDecimal for Javascript is licensed under the Apache License, version 2.0.
 
 [gwt]: http://code.google.com/webtoolkit/
 [sdk]: http://code.google.com/webtoolkit/download.html
+[ant]: http://ant.apache.org/index.html
 [commonjs]: http://commonjs.org/
 [gwt-java-math]: http://code.google.com/p/gwt-java-math/
 [couchdb]: http://couchdb.apache.org/
