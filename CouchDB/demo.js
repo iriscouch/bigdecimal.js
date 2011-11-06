@@ -6,11 +6,15 @@ var fs = require('fs')
 var ddoc = module.exports = {};
 
 ddoc._id = '_design/bigdecimal';
-ddoc.shows = {};
 
+ddoc.validate_doc_update = function(newDoc, oldDoc, userCtx, secObj) {
+  throw {forbidden:"No changes allowed in the BigDecimal demo"};
+}
+
+ddoc.shows = {};
 ddoc.shows.ui = function(doc, req) {
   var ddoc = this
-    , BD = require("bigdecimal")
+    , bd = require("bigdecimal")
     ;
 
   log(req.query);
@@ -32,7 +36,7 @@ ddoc.shows.ui = function(doc, req) {
     result = (op == 'divide') ? a[op].apply(a, [b, 300, bd.RoundingMode.HALF_UP()]) : a[op].apply(a, [b]);
     response.body = a.toString() + ' ' + match[2] + ' ' + b.toString() + ' = ' + result.toString() +
                     (op == 'divide' ? "<br>(Division precision set to 300)<br>" : "") +
-                    "<br><br><a href='http://github.com/jhs/bigdecimal.js'>bigdecimal.js - BigDecimal and BigInteger for Javascript</a>";
+                    "<br><br><a href='https://github.com/iriscouch/bigdecimal.js'>bigdecimal.js - BigDecimal and BigInteger for Javascript</a>";
   }
 
   response.body += '\n';
