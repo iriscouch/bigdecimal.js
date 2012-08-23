@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/iriscouch/bigdecimal.js.png)](http://travis-ci.org/iriscouch/bigdecimal.js)
 #  BigDecimal for Javascript
 
 *BigDecimal for Javascript* is a pure-Javascript implementation of immutable, arbitrary-precision, signed decimal numbers. BigDecimal supports **decimal** math with arbitrary precision.
