@@ -43,21 +43,21 @@ class JsArgs extends JavaScriptObject {
 
   public static final native String signature(JsArgs self) /*-{
     var result = [];
-    for (var a in self) {
-      var type = typeof(self[a]);
+    for (var i=0; i<self.length; i++) {
+      var type = typeof(self[i]);
       if(type != 'object')
         result[result.length] = type;
-      else if(self[a] instanceof Array)
+      else if(self[i] instanceof Array)
         result[result.length] = 'array';
       else {
         // An object, but possibly an instance of a known type.
-        if($wnd && $wnd.bigdecimal && $wnd.bigdecimal.BigInteger && (self[a] instanceof $wnd.bigdecimal.BigInteger))
+        if($wnd && $wnd.bigdecimal && $wnd.bigdecimal.BigInteger && (self[i] instanceof $wnd.bigdecimal.BigInteger))
           result[result.length] = 'BigInteger';
-        else if($wnd && $wnd.bigdecimal && $wnd.bigdecimal.BigDecimal && (self[a] instanceof $wnd.bigdecimal.BigDecimal))
+        else if($wnd && $wnd.bigdecimal && $wnd.bigdecimal.BigDecimal && (self[i] instanceof $wnd.bigdecimal.BigDecimal))
           result[result.length] = 'BigDecimal';
-        else if($wnd && $wnd.bigdecimal && $wnd.bigdecimal.RoundingMode && (self[a] instanceof $wnd.bigdecimal.RoundingMode))
+        else if($wnd && $wnd.bigdecimal && $wnd.bigdecimal.RoundingMode && (self[i] instanceof $wnd.bigdecimal.RoundingMode))
           result[result.length] = 'RoundingMode';
-        else if($wnd && $wnd.bigdecimal && $wnd.bigdecimal.MathContext && (self[a] instanceof $wnd.bigdecimal.MathContext))
+        else if($wnd && $wnd.bigdecimal && $wnd.bigdecimal.MathContext && (self[i] instanceof $wnd.bigdecimal.MathContext))
           result[result.length] = 'MathContext';
         else
           result[result.length] = 'object';
@@ -65,7 +65,7 @@ class JsArgs extends JavaScriptObject {
     }
     return result.join(' ');
   }-*/;
-
+  
   public final native void push(JavaScriptObject obj) /*-{
     this[this.length] = obj;
   }-*/;
