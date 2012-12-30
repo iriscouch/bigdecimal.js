@@ -44,7 +44,8 @@ function fix_and_export(class_name) {
           var pub_name = a.replace(/_va$/, '');
           Fixed[pub_name] = function wrap_classmeth () {
             var args = Array.prototype.slice.call(arguments);
-            return wrap_classmeth.inner_method(args);
+            var m = wrap_classmeth.inner_method ? wrap_classmeth.inner_method : arguments.callee.inner_method;
+            return m.apply(this, [args]);
           };
           Fixed[pub_name].inner_method = Src[a];
         }
@@ -58,7 +59,8 @@ function fix_and_export(class_name) {
       var pub_name = a.replace(/_va$/, '');
       proto[pub_name] = function wrap_meth() {
         var args = Array.prototype.slice.call(arguments);
-        return wrap_meth.inner_method.apply(this, [args]);
+        var m = wrap_meth.inner_method ? wrap_meth.inner_method : arguments.callee.inner_method;
+        return m.apply(this, [args]);
       };
       proto[pub_name].inner_method = proto[a];
       delete proto[a];
